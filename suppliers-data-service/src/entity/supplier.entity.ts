@@ -1,8 +1,8 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Supplier {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   vat_number: number;
 
   @Column()

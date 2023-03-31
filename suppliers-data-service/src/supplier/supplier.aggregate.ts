@@ -1,6 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { CreateSupplierCommand } from './commands/create-supplier.command';
-import { SupplierCreatedEvent } from './events/supplier-created.event';
+import { CreateSupplierCommand } from '../commands/create-supplier.command';
+import { SupplierCreatedEvent } from '../events/supplier-created.event';
 
 export class SupplierAggregate extends AggregateRoot {
   createSupplier(

@@ -1,10 +1,8 @@
-export class GetSupplierQuery {
-  constructor(
-    public readonly vat_number: number,
-    public readonly name: string,
-    public readonly country: string,
-    public readonly roles: string,
-    public readonly sector: string,
-    public readonly certificate_link: string,
-  ) {}
+import { IQuery } from '@nestjs/cqrs';
+export class GetSupplierQuery implements IQuery {
+  readonly vat_number: number;
+
+  constructor(options: GetSupplierQuery) {
+    Object.assign(this, options);
+  }
 }

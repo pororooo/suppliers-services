@@ -1,4 +1,5 @@
-export class CreateSupplierCommand {
+import { ICommand } from '@nestjs/cqrs';
+export class CreateSupplierCommand implements ICommand {
   constructor(
     public readonly vat_number: number,
     public readonly name: string,

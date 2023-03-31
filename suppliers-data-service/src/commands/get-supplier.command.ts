@@ -1,5 +1,6 @@
-import { IEvent } from '@nestjs/cqrs';
-export class SupplierCreatedEvent implements IEvent {
+import { ICommand } from '@nestjs/cqrs';
+
+export class GetSupplierCommand implements ICommand {
   constructor(
     public readonly vat_number: number,
     public readonly name: string,
