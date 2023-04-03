@@ -1,5 +1,4 @@
 import { ICommand } from '@nestjs/cqrs';
-
 export class UpdateSupplierCommand implements ICommand {
   constructor(
     public readonly vat_number: number,

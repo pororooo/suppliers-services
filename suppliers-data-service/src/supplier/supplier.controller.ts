@@ -2,44 +2,44 @@ import {
   Controller,
   Post,
   Get,
-  UseInterceptors,
   Put,
   Delete,
   Body,
-  Req,
-  Param,
+  UsePipes,
+  HttpCode,
+  ValidationPipe,
 } from '@nestjs/common';
-import { CreateSupplierDto } from '../dto/createSupplier.dto';
-import { SupplierService } from './supplier.service';
-import { Supplier } from 'src/entity/supplier.entity';
 import { CreateSupplierCommand } from 'src/commands/create-supplier.command';
-import { CommandBus } from '@nestjs/cqrs';
-
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { GetSupplierQuery } from 'src/queries/get-supplier.query';
+import { UpdateSupplierCommand } from 'src/commands/update-supplier.command';
+import { DeleteSupplierCommand } from 'src/commands/delete-supplier.command';
 @Controller('supplier')
 export class SupplierController {
   constructor(
-    private supplierService: SupplierService,
     private commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
   ) {}
-
-  @Get()
-  async getSuppliers(): Promise<Supplier[]> {
-    return this.supplierService.getSuppliers();
+  @Post('add')
+  @HttpCode(201)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async createSupplier(@Body() newSupplier: CreateSupplierCommand) {
+    return await this.commandBus.execute(newSupplier);
   }
-  @Post()
-  async createSupplier(
-    @Body() createSupplierDto: CreateSupplierDto,
-  ): Promise<Supplier> {
-    const { vat_number, name, country, roles, sector, certificate_link } =
-      createSupplierDto;
-    const command = new CreateSupplierCommand(
-      vat_number,
-      name,
-      country,
-      roles,
-      sector,
-      certificate_link,
-    );
-    return this.commandBus.execute(command);
+  @Get('get')
+  async getAll() {
+    return await this.queryBus.execute(new GetSupplierQuery());
+  }
+  @Put('update')
+  @HttpCode(201)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async update(@Body() updatedSupplier: UpdateSupplierCommand) {
+    return await this.commandBus.execute(updatedSupplier);
+  }
+  @Delete('remove')
+  @HttpCode(201)
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async remove(@Body() deletedSupplier: DeleteSupplierCommand) {
+    return await this.commandBus.execute(deletedSupplier);
   }
 }
