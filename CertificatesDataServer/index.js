@@ -11,6 +11,8 @@ app.use(express.urlencoded({ extended: true }));
 
 const PORT = process.env.PORT ?? 3000;
 
+const array_of_allowed_files = ["png", "jpeg", "jpg", "pdf"];
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const uploadPath = req.query.supplierId;
@@ -18,6 +20,13 @@ const storage = multer.diskStorage({
     cb(null, `${uploadPath}`);
   },
   filename: function (req, file, cb) {
+    const file_extension = file.originalname.slice(
+      ((file.originalname.lastIndexOf(".") - 1) >>> 0) + 2
+    );
+    if (!array_of_allowed_files.includes(file_extension)) {
+      throw Error("Invalid file");
+    }
+
     cb(null, file.originalname);
   },
 });

@@ -8,12 +8,13 @@ import {
   UsePipes,
   HttpCode,
   ValidationPipe,
+  Query,
 } from '@nestjs/common';
-import { CreateSupplierCommand } from 'src/commands/create-supplier.command';
+import { CreateSupplierCommand } from 'src/commands/impl/create-supplier.command';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetSupplierQuery } from 'src/queries/get-supplier.query';
-import { UpdateSupplierCommand } from 'src/commands/update-supplier.command';
-import { DeleteSupplierCommand } from 'src/commands/delete-supplier.command';
+import { UpdateSupplierCommand } from 'src/commands/impl/update-supplier.command';
+import { DeleteSupplierCommand } from 'src/commands/impl/delete-supplier.command';
 @Controller('supplier')
 export class SupplierController {
   constructor(
@@ -39,7 +40,7 @@ export class SupplierController {
   @Delete('remove')
   @HttpCode(201)
   @UsePipes(new ValidationPipe({ transform: true }))
-  async remove(@Body() deletedSupplier: DeleteSupplierCommand) {
+  async remove(@Query() deletedSupplier: DeleteSupplierCommand) {
     return await this.commandBus.execute(deletedSupplier);
   }
 }
