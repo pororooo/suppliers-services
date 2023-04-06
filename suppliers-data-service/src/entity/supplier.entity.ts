@@ -19,5 +19,4 @@ export class Supplier {
 
   @Column()
   certificate_link: string;
-  password: string;
 }
