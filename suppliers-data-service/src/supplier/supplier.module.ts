@@ -8,9 +8,10 @@ import { DeleteSupplierHandler } from 'src/commands/handlers/delete-supplier.han
 import { Supplier } from '../entity/supplier.entity';
 import { SupplierController } from './supplier.controller';
 import { SupplierService } from './supplier.service';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Supplier]), CqrsModule],
+  imports: [TypeOrmModule.forFeature([Supplier]), CqrsModule, AuthModule],
   controllers: [SupplierController],
   providers: [
     SupplierService,

@@ -1,14 +1,15 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Supplier } from 'src/entity/supplier.entity';
 import { Repository } from 'typeorm';
-
 @Injectable()
 export class SupplierService {
   constructor(
     @InjectRepository(Supplier)
     private supplierRepository: Repository<Supplier | undefined>,
   ) {}
+  private readonly logger = new Logger(SupplierService.name);
+
   async findOneByVat(vat_number: number): Promise<Supplier | undefined> {
     const supplier = await this.supplierRepository
       .createQueryBuilder('supplier')
@@ -24,6 +25,7 @@ export class SupplierService {
       .getOne();
 
     if (supplier) {
+      this.logger.log('find supplier by vat_number');
       return supplier;
     }
     throw new BadRequestException('Wrong vat_number');

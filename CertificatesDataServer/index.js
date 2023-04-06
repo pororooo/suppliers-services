@@ -16,7 +16,7 @@ const array_of_allowed_files = ["png", "jpeg", "jpg", "pdf"];
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const uploadPath = req.query.supplierId;
-    fs.mkdirSync(uploadPath, { recursive: true });
+    fs.mkdirSync( uploadPath, { recursive: true });
     cb(null, `${uploadPath}`);
   },
   filename: function (req, file, cb) {

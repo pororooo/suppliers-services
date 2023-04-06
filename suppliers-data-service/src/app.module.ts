@@ -2,8 +2,12 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Supplier } from './entity/supplier.entity';
 import { SupplierModule } from './supplier/supplier.module';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './auth/auth.module';
+
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       username: 'postgres',
       host: 'localhost',
@@ -14,6 +18,7 @@ import { SupplierModule } from './supplier/supplier.module';
       entities: [Supplier],
       synchronize: true,
     }),
+    AuthModule,
     SupplierModule,
   ],
 })
