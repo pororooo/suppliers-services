@@ -30,7 +30,7 @@ export class CreateSupplierHandler
     supplier.sector = sector;
     supplier.certificate_link = certificate_link;
 
-    this.logger.log('create supplier command');
+    this.logger.log('create supplier ' + supplier.name);
 
     const supplierDB: Supplier = await this.supplierRepository.save(supplier);
 
