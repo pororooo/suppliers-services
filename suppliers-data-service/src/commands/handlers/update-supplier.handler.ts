@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateSupplierCommand } from '../impl/update-supplier.command';
-import { Supplier } from '../../entity/supplier.entity';
+import { Supplier } from 'src/models/supplier.model';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SupplierService } from 'src/supplier/supplier.service';

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Supplier } from './entity/supplier.entity';
+import { Supplier } from 'src/models/supplier.model';
 import { SupplierModule } from './supplier/supplier.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';

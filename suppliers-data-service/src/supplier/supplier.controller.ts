@@ -13,43 +13,43 @@ import {
   Logger,
 } from '@nestjs/common';
 import { BasicGuard } from 'src/auth/basic.guard';
-import { CreateSupplierCommand } from 'src/commands/impl/create-supplier.command';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { GetSupplierQuery } from 'src/queries/get-supplier.query';
 import { UpdateSupplierCommand } from 'src/commands/impl/update-supplier.command';
 import { DeleteSupplierCommand } from 'src/commands/impl/delete-supplier.command';
+import { SupplierService } from './supplier.service';
+import { supplierDto } from 'src/dto/supplier.dto';
+import { CommandBus } from '@nestjs/cqrs/dist';
 @Controller('supplier')
 @UseGuards(BasicGuard)
 export class SupplierController {
   constructor(
+    private readonly service: SupplierService,
     private commandBus: CommandBus,
-    private readonly queryBus: QueryBus,
   ) {}
   private readonly logger = new Logger(SupplierController.name);
   @Post('add')
   @HttpCode(201)
   @UsePipes(new ValidationPipe({ transform: true }))
-  async createSupplier(@Body() newSupplier: CreateSupplierCommand) {
+  async createSupplier(@Body() newSupplier: supplierDto): Promise<supplierDto> {
     this.logger.log('post suppliers');
-    return await this.commandBus.execute(newSupplier);
+    return await this.service.createSupplier({ ...newSupplier });
   }
   @Get('get')
   async getAll() {
     this.logger.log('get suppliers');
-    return await this.queryBus.execute(new GetSupplierQuery());
+    return await this.service.getSupplier();
   }
   @Put('update')
   @HttpCode(201)
   @UsePipes(new ValidationPipe({ transform: true }))
-  async update(@Body() updatedSupplier: UpdateSupplierCommand) {
+  async update(@Body() updatedSupplier: supplierDto) {
     this.logger.log('update supplier');
-    return await this.commandBus.execute(updatedSupplier);
+    return await this.service.updateSupplier(updatedSupplier);
   }
   @Delete('remove')
   @HttpCode(201)
   @UsePipes(new ValidationPipe({ transform: true }))
   async remove(@Query() deletedSupplier: DeleteSupplierCommand) {
     this.logger.log('delete supplier');
-    return await this.commandBus.execute(deletedSupplier);
+    return await this.service.deleteSupplier(deletedSupplier);
   }
 }

@@ -5,10 +5,11 @@ import { CreateSupplierHandler } from 'src/commands/handlers/create-supplier.han
 import { GetSupplierHandler } from 'src/commands/handlers/get-supplier.handler';
 import { UpdateSupplierHandler } from 'src/commands/handlers/update-supplier.handler';
 import { DeleteSupplierHandler } from 'src/commands/handlers/delete-supplier.handler';
-import { Supplier } from '../entity/supplier.entity';
+import { Supplier } from 'src/models/supplier.model';
 import { SupplierController } from './supplier.controller';
 import { SupplierService } from './supplier.service';
 import { AuthModule } from 'src/auth/auth.module';
+import { SupplierRepository } from 'src/repositories/supplier.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Supplier]), CqrsModule, AuthModule],
@@ -19,6 +20,7 @@ import { AuthModule } from 'src/auth/auth.module';
     CreateSupplierHandler,
     UpdateSupplierHandler,
     DeleteSupplierHandler,
+    SupplierRepository,
   ],
 })
 export class SupplierModule {}

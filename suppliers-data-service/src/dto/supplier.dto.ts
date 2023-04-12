@@ -5,22 +5,17 @@ export class supplierDto {
   vat_number: number;
 
   @IsString()
-  @IsNotEmpty()
   name: string;
 
   @IsString()
-  @IsNotEmpty()
   country: string;
 
   @IsString()
-  @IsNotEmpty()
   roles: string;
 
   @IsString()
-  @IsNotEmpty()
   sector: string;
 
   @IsString()
-  @IsNotEmpty()
   certificate_link: string;
 }
