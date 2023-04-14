@@ -1,12 +1,12 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { DeleteSupplierCommand } from '../impl/delete-supplier.command';
-import { Supplier } from 'src/models/supplier.model';
-import { Repository } from 'typeorm';
+import { Supplier } from 'src/entity/supplier.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { SupplierService } from 'src/supplier/supplier.service';
 import { Logger } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs/dist/event-bus';
 import { SupplierDeletedEvent } from 'src/events/impl/supplier-deleted.event';
+import { SupplierRepository } from 'src/repositories/supplier.repository';
 
 @CommandHandler(DeleteSupplierCommand)
 export class DeleteSupplierHandler
@@ -14,7 +14,7 @@ export class DeleteSupplierHandler
 {
   constructor(
     @InjectRepository(Supplier)
-    private supplierRepository: Repository<Supplier>,
+    private supplierRepository: SupplierRepository,
     private service: SupplierService,
     private readonly eventBus: EventBus,
   ) {}
@@ -33,7 +33,7 @@ export class DeleteSupplierHandler
     return supplierDB;
   }
 
-  private async sendEvent(vat_number: number, eventBus: EventBus) {
+  async sendEvent(vat_number: number, eventBus: EventBus) {
     eventBus.publish(new SupplierDeletedEvent(vat_number));
   }
 }

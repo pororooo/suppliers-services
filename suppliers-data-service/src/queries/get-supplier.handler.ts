@@ -1,6 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Supplier } from 'src/models/supplier.model';
+import { Supplier } from 'src/entity/supplier.entity';
 import { Repository } from 'typeorm';
 import { Logger } from '@nestjs/common/services';
 import { GetSupplierQuery } from 'src/queries/get-supplier.query';

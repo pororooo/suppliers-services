@@ -1,22 +1,23 @@
-// import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { AggregateRoot } from '@nestjs/cqrs';
+import { Entity, Column, PrimaryColumn } from 'typeorm';
 
-// @Entity()
-// export class Supplier {
-//   @PrimaryColumn()
-//   vat_number: number;
+@Entity()
+export class Supplier extends AggregateRoot {
+  @PrimaryColumn()
+  vat_number: number;
 
-//   @Column()
-//   name: string;
+  @Column()
+  name: string;
 
-//   @Column()
-//   country: string;
+  @Column()
+  country: string;
 
-//   @Column()
-//   roles: string;
+  @Column()
+  roles: string;
 
-//   @Column()
-//   sector: string;
+  @Column()
+  sector: string;
 
-//   @Column()
-//   certificate_link: string;
-// }
+  @Column()
+  certificate_link: string;
+}

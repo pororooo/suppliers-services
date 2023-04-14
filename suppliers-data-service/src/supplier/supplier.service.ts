@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { supplierDto } from 'src/dto/supplier.dto';
-import { Supplier } from 'src/models/supplier.model';
+import { Supplier } from 'src/entity/supplier.entity';
 import { Repository } from 'typeorm';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateSupplierCommand } from 'src/commands/impl/create-supplier.command';

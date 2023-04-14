@@ -16,7 +16,6 @@ import { BasicGuard } from 'src/auth/basic.guard';
 import { DeleteSupplierCommand } from 'src/commands/impl/delete-supplier.command';
 import { SupplierService } from './supplier.service';
 import { supplierDto } from 'src/dto/supplier.dto';
-import { CommandBus } from '@nestjs/cqrs/dist';
 @Controller('supplier')
 @UseGuards(BasicGuard)
 export class SupplierController {

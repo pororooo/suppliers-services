@@ -12,7 +12,7 @@ const client = new Client({
 client.connect();
 
 
-client.query('SELECT * FROM suppliers', (err, res) => {
+client.query('SELECT * FROM supplier', (err, res) => {
     if (err) {
       console.error(err);
     } else {

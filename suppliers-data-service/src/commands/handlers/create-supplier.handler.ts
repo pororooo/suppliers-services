@@ -1,12 +1,12 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler, EventPublisher } from '@nestjs/cqrs';
 import { CreateSupplierCommand } from '../impl/create-supplier.command';
-import { Supplier } from 'src/models/supplier.model';
-import { Repository } from 'typeorm';
+import { Supplier } from 'src/entity/supplier.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Logger } from '@nestjs/common/services';
 import { EventBus } from '@nestjs/cqrs';
 import { SupplierCreatedEvent } from 'src/events/impl/supplier-created.event';
-
+import { SupplierRepository } from 'src/repositories/supplier.repository';
+import { supplierDto } from 'src/dto/supplier.dto';
 @CommandHandler(CreateSupplierCommand)
 export class CreateSupplierHandler
   implements ICommandHandler<CreateSupplierCommand>
@@ -15,7 +15,9 @@ export class CreateSupplierHandler
 
   constructor(
     @InjectRepository(Supplier)
-    private supplierRepository: Repository<Supplier>,
+    private repository: SupplierRepository,
+    private readonly supplierDto: supplierDto,
+    private readonly publisher: EventPublisher,
     private readonly eventBus: EventBus,
   ) {}
 
@@ -32,39 +34,13 @@ export class CreateSupplierHandler
 
     this.logger.log('create supplier ' + supplier.name);
 
-    const supplierDB: Supplier = await this.supplierRepository.save(supplier);
+    const supplierDB: Supplier = await this.repository.save(supplier);
 
-    this.sendEvent(
-      supplier.vat_number,
-      supplier.name,
-      supplier.country,
-      supplier.roles,
-      supplier.sector,
-      supplier.certificate_link,
-      this.eventBus,
-    );
+    this.sendEvent(supplier, this.eventBus);
 
     return supplierDB;
   }
-
-  private async sendEvent(
-    vat_number: number,
-    name: string,
-    country: string,
-    roles: string,
-    sector: string,
-    certificate_link: string,
-    eventBus: EventBus,
-  ) {
-    eventBus.publish(
-      new SupplierCreatedEvent(
-        vat_number,
-        name,
-        country,
-        roles,
-        sector,
-        certificate_link,
-      ),
-    );
+  async sendEvent(supplier: supplierDto, eventBus: EventBus) {
+    eventBus.publish(new SupplierCreatedEvent(supplier));
   }
 }

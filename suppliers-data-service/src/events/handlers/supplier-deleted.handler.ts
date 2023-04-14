@@ -1,6 +1,10 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Supplier } from 'src/entity/supplier.entity';
+import { SupplierRepository } from 'src/repositories/supplier.repository';
+import { SupplierService } from 'src/supplier/supplier.service';
+import { Logger } from '@nestjs/common';
 import { SupplierDeletedEvent } from '../impl/supplier-deleted.event';
-import { Logger } from '@nestjs/common/services';
 
 @EventsHandler(SupplierDeletedEvent)
 export class SupplierDeletedHandler
@@ -8,7 +12,17 @@ export class SupplierDeletedHandler
 {
   private readonly logger = new Logger(SupplierDeletedHandler.name);
 
-  handle(event: SupplierDeletedEvent) {
-    this.logger.log('SupplierDeletedEvent...' + event.vat_number);
+  constructor(
+    @InjectRepository(Supplier)
+    private repository: SupplierRepository,
+    private service: SupplierService,
+  ) {}
+
+  async handle(event: SupplierDeletedEvent) {
+    const { vat_number } = event;
+
+    this.logger.log(
+      `Received SupplierDeletedEvent for supplier with vat_ number ${vat_number}`,
+    );
   }
 }
