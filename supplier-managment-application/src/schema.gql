@@ -1,0 +1,33 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type SupplierOutput {
+  vat_number: Float!
+  name: String!
+  country: String!
+  roles: String!
+  sector: String!
+  certificate_link: String!
+  file_name: String!
+  file_type: String!
+}
+
+type Query {
+  getSupplier: SupplierOutput!
+}
+
+type Mutation {
+  sendDataToGrpcServer(supplierinput: SupplierInput!): SupplierOutput!
+}
+
+input SupplierInput {
+  vat_number: Float!
+  name: String!
+  country: String!
+  roles: String!
+  sector: String!
+  certificate_link: String!
+  file_name: String!
+  file_type: String!
+}

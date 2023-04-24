@@ -19,7 +19,9 @@ import { supplierDto } from 'src/dto/supplier.dto';
 @Controller('supplier')
 @UseGuards(BasicGuard)
 export class SupplierController {
-  constructor(private readonly service: SupplierService) {}
+  constructor(
+    private readonly service: SupplierService, // private readonly grpcClient: GrpcClient,
+  ) {}
   private readonly logger = new Logger(SupplierController.name);
   @Post('add')
   @HttpCode(201)

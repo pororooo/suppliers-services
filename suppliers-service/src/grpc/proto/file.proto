@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package file;
+
+service File {
+  rpc GetDataOne (GetDataOneRequest) returns (GetDataOneResponse) {}
+}
+
+message GetDataOneRequest {
+  bytes content = 1;
+  string filename = 2;
+  string type = 3;
+}
+
+message GetDataOneResponse {
+  bytes content = 1;
+  string filename = 2;
+  string type = 3;}
