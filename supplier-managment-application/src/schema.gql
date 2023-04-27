@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type SupplierOutput {
-  vat_number: Float!
+  vat_number: Int!
   name: String!
   country: String!
   roles: String!
@@ -13,8 +13,17 @@ type SupplierOutput {
   file_type: String!
 }
 
+type FileOutput {
+  _id: String!
+  supplierName: String!
+  path: String!
+  createdAt: String!
+  updatedAt: String!
+  _v: Int!
+}
+
 type Query {
-  getSupplier: SupplierOutput!
+  getFileInfo: FileOutput!
 }
 
 type Mutation {
@@ -22,7 +31,7 @@ type Mutation {
 }
 
 input SupplierInput {
-  vat_number: Float!
+  vat_number: Int!
   name: String!
   country: String!
   roles: String!

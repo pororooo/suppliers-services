@@ -2,7 +2,7 @@ import { Field, Int, InputType, ObjectType } from '@nestjs/graphql';
 
 @InputType()
 export class SupplierInput {
-  @Field()
+  @Field((type) => Int)
   vat_number: number;
 
   @Field()

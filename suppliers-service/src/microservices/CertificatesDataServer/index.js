@@ -49,38 +49,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
 
-app.get('/upload', (req, res) => {
-  res.sendStatus(200);
+
+app.get('/files', (req, res) => {
+  Files.find({})
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ error: 'Internal server error' });
+    });
 });
-// app.get('/upload', (req, res) => {
-//   const url = 'mongodb://localhost:27017';
-//   const dbName = 'mydatabase';
-//   MongoClient.connect(url, function(err, client) {
-//     if (err) {
-//       console.error('Failed to connect to MongoDB', err);
-//       res.sendStatus(500);
-//       return;
-//     }
-
-//     console.log("Connected successfully to server");
-
-//     const db = client.db(dbName);
-
-//     const collection = db.collection('mycollection');
-//     collection.find({}).toArray(function(err, docs) {
-//       if (err) {
-//         console.error('Failed to retrieve documents from MongoDB', err);
-//         res.sendStatus(500);
-//         return;
-//       }
-
-//       console.log("Found the following records:");
-//       console.log(docs);
-//       res.send(docs);
-//       client.close();
-//     });
-//   });
-// });
 app.post('/upload', upload.single('file'), (req, res) => {
   const post = new Files({
     supplierName: req.query.supplierId,
