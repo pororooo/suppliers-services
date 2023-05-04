@@ -1,14 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SupplierInput } from './model/supplierInput.model';
 import { SupplierOutput } from './model/supplierOutput.model';
-import { GrpcClientService } from 'src/grpc/client/client.server';
+import { GrpcClientSupplierService } from 'src/grpc/client/client.server';
 
 @Injectable()
 export class SupplierService {
-  private grpcService: GrpcClientService;
+  private grpcService: GrpcClientSupplierService;
   private readonly logger = new Logger(SupplierService.name);
 
-  async findAll(): Promise<SupplierOutput[]> {
+  async getAll(): Promise<SupplierOutput[]> {
     this.logger.log('find all');
     const supplier = new SupplierOutput();
 

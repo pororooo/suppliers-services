@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import Files from './models/files.js';
-import { MongoClient } from 'mongodb';
+import { join } from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -31,7 +31,7 @@ const array_of_allowed_files = ['png', 'jpeg', 'jpg', 'pdf'];
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadPath = __dirname + '\\' + req.query.supplierId;
+    const uploadPath = join(__dirname,'../../../', req.query.supplierId);
     fs.mkdirSync(uploadPath, { recursive: true });
     cb(null, `${uploadPath}`);
   },
@@ -61,9 +61,11 @@ app.get('/files', (req, res) => {
     });
 });
 app.post('/upload', upload.single('file'), (req, res) => {
+  console.log(req.file.originalname)
   const post = new Files({
     supplierName: req.query.supplierId,
-    path: __dirname + '\\' + req.query.supplierId,
+    fileName: req.file.originalname,
+    path: join(__dirname, '../../../', req.query.supplierId),
   });
   post
     .save()

@@ -4,6 +4,12 @@ package supplier;
 
 service SupplierService {
   rpc GetData (SupplierRequest) returns (SupplierResponce) {}
+  rpc find (commons.Query) returns (FindSuppliers) {}
+  rpc findByVatNumber (commons.vatNumber) returns (SupplierResponce) {}
+  rpc create (CreateSupplierInput) returns (SupplierResponce) {}
+  rpc update (UpdateSupplierInput) returns (SupplierResponce) {}
+  rpc delete (commons.Query) returns (commons.Count) {}
+
 }
 
 message SupplierRequest {
@@ -15,10 +21,37 @@ message SupplierRequest {
   string certificate_link = 6;
   bytes content = 7;
   string filename = 8;
-  string type = 9;
+  string filetype = 9;
+
 }
 
 message SupplierResponce {
+  int64 vat_number = 1;
+  string name = 2;
+  string country = 3;
+  string roles = 4;
+  string sector = 5;
+  string certificate_link = 6;
+  bytes content = 7;
+  string filename = 8;
+  string filetype = 9;
+
+}
+message CreateSupplierInput {
+  int64 vat_number = 1;
+  string name = 2;
+  string country = 3;
+  string roles = 4;
+  string sector = 5;
+  string certificate_link = 6;
+}
+
+message UpdateSupplierInput {
+  int64 vat_number = 1;
+  SupplierRequest data = 2;
+}
+
+message FindSupplier {
   int64 vat_number = 1;
   string name = 2;
   string country = 3;

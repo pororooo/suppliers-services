@@ -15,17 +15,10 @@ async function bootstrap() {
     },
   });
 
-  app.connectMicroservice({
-    transport: Transport.GRPC,
-    options: {
-      url: 'localhost:50052',
-      package: 'file',
-      protoPath: join(__dirname, 'file.proto'),
-    },
-  });
 
   await app.startAllMicroservices();
 
   // await app.listen(3000);
 }
 bootstrap();
+

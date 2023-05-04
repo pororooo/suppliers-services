@@ -14,20 +14,21 @@ type SupplierOutput {
 }
 
 type FileOutput {
-  _id: String!
-  supplierName: String!
-  path: String!
-  createdAt: String!
-  updatedAt: String!
-  _v: Int!
+  supplierName: String
+  path: String
 }
 
 type Query {
-  getFileInfo: FileOutput!
+  getFileInfo(supplierName: String, path: String): FileOutput!
 }
 
 type Mutation {
+  sendFileName(fileName: FileInput!): FileOutput!
   sendDataToGrpcServer(supplierinput: SupplierInput!): SupplierOutput!
+}
+
+input FileInput {
+  path: String!
 }
 
 input SupplierInput {

@@ -10,8 +10,7 @@ import { join } from 'path';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       csrfPrevention: false,
       driver: ApolloDriver,
-      playground: false,
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     }),
     
