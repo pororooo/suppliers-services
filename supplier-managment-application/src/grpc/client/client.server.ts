@@ -16,7 +16,6 @@ export class GrpcClientSupplierService implements OnModuleInit {
     options: {
       package: 'supplier',
       protoPath: join(__dirname, '../proto/supplier.proto'),
-      // url: 'other-service'
     },
   })
   private client: ClientGrpc;

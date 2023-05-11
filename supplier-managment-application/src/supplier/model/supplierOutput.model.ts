@@ -5,7 +5,7 @@ export class SupplierOutput {
   @Field((type) => Int)
   vat_number: number;
 
-  @Field((type) => String)
+  @Field()
   name: string;
 
   @Field()

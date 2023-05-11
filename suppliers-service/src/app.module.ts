@@ -1,9 +1,6 @@
 import { Module } from '@nestjs/common';
-import { LoggerModule } from 'nestjs-pino';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { SupplierController } from './app.controller';
-import { SupplierService } from './app.service';
-import { ClientProxyFactory } from '@nestjs/microservices';
+import { SupplierController } from './supplier/supplier.controller';
 
 @Module({
   imports: [ConfigModule],
@@ -11,13 +8,7 @@ import { ClientProxyFactory } from '@nestjs/microservices';
   providers: [
     {
       provide: 'GrpcSupplierService',
-      useFactory: (
-        configService: ConfigService,
-        supplierService: SupplierService,
-      ) => {
-        // const supplierOptions = configService.get().supplierService;
-        // return ClientProxyFactory.create(supplierOptions);
-      },
+      useFactory: (configService: ConfigService) => {},
     },
   ],
 })

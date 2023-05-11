@@ -28,11 +28,14 @@
     "@nestjs/graphql": "^11.0.5",
     "@nestjs/microservices": "^9.4.0",
     "@nestjs/platform-express": "^9.0.0",
+    "@nestjs/sequelize": "^9.0.2",
     "@types/sequelize": "^4.28.14",
+    "axios": "^1.4.0",
     "lodash": "^4.17.21",
     "nestjs-pino": "^3.1.2",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "sequelize-cursor-pagination": "^3.4.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
