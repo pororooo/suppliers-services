@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { SupplierController } from './supplier/supplier.controller';
+import { ConfigModule } from '@nestjs/config';
+import { SupplierModule } from './supplier/supplier.module';
 
 @Module({
-  imports: [ConfigModule],
-  controllers: [SupplierController],
-  providers: [
-    {
-      provide: 'GrpcSupplierService',
-      useFactory: (configService: ConfigService) => {},
-    },
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    SupplierModule,
   ],
 })
 export class AppModule {}

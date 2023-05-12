@@ -1,12 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Supplier } from './supplier.model';
 import { CreateSupplierDto } from './dto/createSupplier.dto';
 import { GetSupplierDto } from './dto/getSupplier.dto';
 import { UpdateSupplierDto } from './dto/updateSupplier.dto';
 import { DeleteSupplierDto } from './dto/deleteSupplier.dto';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
-import { Status } from './dto/statusResponce.interface';
+import { Status } from './dto/statusResponce.dto';
 
 @Injectable()
 export class SupplierService {
@@ -52,7 +51,7 @@ export class SupplierService {
     return supplierResponce;
   }
 
-  async createSupplier(data: CreateSupplierDto): Promise<Status> {
+  async createSupplier(data: UpdateSupplierDto): Promise<Status> {
     const supplierResponce = await axios
       .post(
         `${this.configService.get<string>(

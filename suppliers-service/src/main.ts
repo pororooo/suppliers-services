@@ -15,7 +15,7 @@ async function bootstrap() {
     options: {
       url: 'localhost:50051',
       package: 'supplier',
-      protoPath: join(__dirname, '../proto/supplier.proto'),
+      protoPath: join(__dirname, '../src/grpc/proto/supplier.proto'),
     },
   });
 

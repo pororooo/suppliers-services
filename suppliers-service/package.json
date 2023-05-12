@@ -29,6 +29,7 @@
     "@nestjs/microservices": "^9.4.0",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/sequelize": "^9.0.2",
+    "@nestjs/typeorm": "^9.0.1",
     "@types/sequelize": "^4.28.14",
     "axios": "^1.4.0",
     "lodash": "^4.17.21",

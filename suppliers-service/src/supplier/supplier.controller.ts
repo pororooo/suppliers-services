@@ -5,14 +5,13 @@ import { GetSupplierDto } from './dto/getSupplier.dto';
 import { CreateSupplierDto } from './dto/createSupplier.dto';
 import { UpdateSupplierDto } from './dto/updateSupplier.dto';
 import { DeleteSupplierDto } from './dto/deleteSupplier.dto';
-import { Status } from './dto/statusResponce.interface';
+import { Status } from './dto/statusResponce.dto';
 
 @Controller()
 export class SupplierController {
   private readonly logger = new Logger(SupplierController.name);
 
   constructor(
-    @Inject('SupplierService')
     private readonly supplierService: SupplierService,
   ) {}
 

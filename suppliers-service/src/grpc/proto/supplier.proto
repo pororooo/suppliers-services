@@ -28,7 +28,11 @@ message CreateSupplierInput {
 
 message UpdateSupplierInput {
   int64 vat_number = 1;
-  SupplierRequest data = 2;
+  string name = 2;
+  string country = 3;
+  repeated string roles = 4;
+  repeated string sector = 5;
+  string certificate_link = 6;
 }
 
 message DeleteSupplier {
@@ -42,9 +46,6 @@ message SupplierResponce {
   repeated string roles = 4;
   repeated string sector = 5;
   string certificate_link = 6;
-  // bytes content = 7;
-  // string filename = 8;
-  // string filetype = 9;
 }
 
 message Status {

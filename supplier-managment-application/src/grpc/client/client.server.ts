@@ -1,5 +1,5 @@
 import { ClientGrpc, Transport, Client } from '@nestjs/microservices';
-import { Injectable, Inject } from '@nestjs/common/decorators';
+import { Injectable } from '@nestjs/common/decorators';
 import { join } from 'path';
 import { OnModuleInit, Logger } from '@nestjs/common';
 import { SupplierService } from 'src/supplier/supplier.service';
@@ -20,7 +20,7 @@ export class GrpcClientSupplierService implements OnModuleInit {
   })
   private client: ClientGrpc;
   private supplierService: SupplierService;
-  private grpcService: any; //send a request to the remote server
+  private grpcService: any;
 
   onModuleInit() {
     this.supplierService =
