@@ -6,10 +6,12 @@ import { DeleteSupplierDto } from './dto/deleteSupplier.dto';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
 import { Status } from './dto/statusResponce.dto';
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class SupplierService {
   constructor(private readonly configService: ConfigService) {}
+  private readonly logger = new Logger(SupplierService.name);
 
   async findAll() {
     const supplierResponce = await axios
@@ -18,7 +20,7 @@ export class SupplierService {
           'SUPPLIERS_DATA_SERVICE_URL',
         )}/supplier/get`,
         {
-          headers: {
+          auth: {
             username: this.configService.get<string>('HTTP_BASIC_USERNAME'),
             password: this.configService.get<string>('HTTP_BASIC_PASSWORD'),
           },
@@ -38,7 +40,7 @@ export class SupplierService {
           'SUPPLIERS_DATA_SERVICE_URL',
         )}/supplier/get`,
         {
-          headers: {
+          auth: {
             username: this.configService.get<string>('HTTP_BASIC_USERNAME'),
             password: this.configService.get<string>('HTTP_BASIC_PASSWORD'),
           },
@@ -51,14 +53,15 @@ export class SupplierService {
     return supplierResponce;
   }
 
-  async createSupplier(data: UpdateSupplierDto): Promise<Status> {
+  async createSupplier(data: CreateSupplierDto): Promise<Status> {
+    this.logger.log(data)
     const supplierResponce = await axios
       .post(
         `${this.configService.get<string>(
           'SUPPLIERS_DATA_SERVICE_URL',
         )}/supplier/add`,
         {
-          vat_number: data.vat_number,
+          vat_number: (data.vat_number),
           name: data.name,
           country: data.country,
           roles: data.roles,
@@ -66,7 +69,7 @@ export class SupplierService {
           certificate_link: data.certificate_link,
         },
         {
-          headers: {
+          auth: {
             username: this.configService.get<string>('HTTP_BASIC_USERNAME'),
             password: this.configService.get<string>('HTTP_BASIC_PASSWORD'),
           },
@@ -82,7 +85,7 @@ export class SupplierService {
     return supplierResponce.status;
   }
 
-  async updateSupplier(data: CreateSupplierDto): Promise<Status> {
+  async updateSupplier(data: UpdateSupplierDto): Promise<Status> {
     const supplierResponce = await axios
       .put(
         `${this.configService.get<string>(
@@ -97,7 +100,7 @@ export class SupplierService {
           certificate_link: data.certificate_link,
         },
         {
-          headers: {
+          auth: {
             username: this.configService.get<string>('HTTP_BASIC_USERNAME'),
             password: this.configService.get<string>('HTTP_BASIC_PASSWORD'),
           },
@@ -120,7 +123,7 @@ export class SupplierService {
           'SUPPLIERS_DATA_SERVICE_URL',
         )}/supplier/remove?vat_number=${data.vat_number}`,
         {
-          headers: {
+          auth: {
             username: this.configService.get<string>('HTTP_BASIC_USERNAME'),
             password: this.configService.get<string>('HTTP_BASIC_PASSWORD'),
           },
