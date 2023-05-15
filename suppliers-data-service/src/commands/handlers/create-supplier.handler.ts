@@ -22,16 +22,17 @@ export class CreateSupplierHandler
   ) {}
 
   async execute(command: CreateSupplierCommand) {
-    const { vat_number, name, country, roles, sector, certificate_link } =
+    const { supplierDto } =
       command;
-    const supplier = new Supplier();
-    supplier.vat_number = vat_number;
-    supplier.name = name;
-    supplier.country = country;
-    supplier.roles = roles;
-    supplier.sector = sector;
-    supplier.certificate_link = certificate_link;
+      const supplier = new Supplier();
 
+      supplier.vat_number = supplierDto.vat_number;
+      supplier.name = supplierDto.name;
+      supplier.country = supplierDto.country;
+      supplier.roles = supplierDto.roles;
+      supplier.sector = supplierDto.sector;
+      supplier.certificate_link = supplierDto.certificate_link;
+  
     this.logger.log('create supplier ' + supplier.name);
 
     const supplierDB: Supplier = await this.repository.save(supplier);
@@ -40,7 +41,7 @@ export class CreateSupplierHandler
 
     return supplierDB;
   }
-  async sendEvent(supplier: supplierDto, eventBus: EventBus) {
+  async sendEvent(supplier: Supplier, eventBus: EventBus) {
     eventBus.publish(new SupplierCreatedEvent(supplier));
   }
 }

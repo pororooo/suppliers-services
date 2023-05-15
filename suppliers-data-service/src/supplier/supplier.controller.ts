@@ -16,11 +16,12 @@ import { BasicGuard } from 'src/auth/basic.guard';
 import { DeleteSupplierCommand } from 'src/commands/impl/delete-supplier.command';
 import { SupplierService } from './supplier.service';
 import { supplierDto } from 'src/dto/supplier.dto';
+import { FindOneSupplierQuery } from 'src/queries/get-one-supplier.query';
 @Controller('supplier')
 @UseGuards(BasicGuard)
 export class SupplierController {
   constructor(
-    private readonly service: SupplierService, // private readonly grpcClient: GrpcClient,
+    private readonly service: SupplierService,
   ) {}
   private readonly logger = new Logger(SupplierController.name);
   @Post('add')
@@ -33,7 +34,13 @@ export class SupplierController {
   @Get('get')
   async getAll() {
     this.logger.log('get request');
-    return await this.service.getSupplier();
+    return await this.service.getSuppliers();
+  }
+  @Get('getone')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async getOne(@Query() findSupplier: FindOneSupplierQuery) {
+    this.logger.log('get one request');
+    return await this.service.findOneByVat(findSupplier.vat_number);
   }
   @Put('update')
   @HttpCode(201)

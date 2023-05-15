@@ -1,11 +1,5 @@
 import { ICommand } from '@nestjs/cqrs';
+import { supplierDto } from 'src/dto/supplier.dto';
 export class CreateSupplierCommand implements ICommand {
-  constructor(
-    public readonly vat_number: number,
-    public readonly name: string,
-    public readonly country: string,
-    public readonly roles: string,
-    public readonly sector: string,
-    public readonly certificate_link: string,
-  ) {}
+  constructor(public readonly supplierDto: supplierDto) {}
 }

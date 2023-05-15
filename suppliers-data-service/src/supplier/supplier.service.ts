@@ -21,14 +21,7 @@ export class SupplierService {
 
   async createSupplier(supplier: supplierDto) {
     return await this.commandBus.execute(
-      new CreateSupplierCommand(
-        supplier.vat_number,
-        supplier.name,
-        supplier.country,
-        supplier.roles,
-        supplier.sector,
-        supplier.certificate_link,
-      ),
+      new CreateSupplierCommand({ ...supplier }),
     );
   }
   async deleteSupplier(supplier: DeleteSupplierCommand) {
@@ -48,7 +41,7 @@ export class SupplierService {
     );
   }
 
-  async getSupplier() {
+  async getSuppliers() {
     return await this.queryBus.execute(new GetSupplierQuery());
   }
 

@@ -53,15 +53,17 @@ export class SupplierService {
     return supplierResponce;
   }
 
-  async createSupplier(data: CreateSupplierDto): Promise<Status> {
-    this.logger.log(data)
+  async createSupplier(data: CreateSupplierDto): Promise<any> {
+    this.logger.log(`${this.configService.get<string>(
+      'SUPPLIERS_DATA_SERVICE_URL',
+    )}/supplier/add`);
     const supplierResponce = await axios
       .post(
         `${this.configService.get<string>(
           'SUPPLIERS_DATA_SERVICE_URL',
         )}/supplier/add`,
         {
-          vat_number: (data.vat_number),
+          vat_number: data.vat_number,
           name: data.name,
           country: data.country,
           roles: data.roles,
@@ -76,13 +78,14 @@ export class SupplierService {
         },
       )
       .then((res) => {
-        return res.status;
+        return res.data;
       })
       .catch((error) => {
+        this.logger.log(error)
         return error;
       });
 
-    return supplierResponce.status;
+    return supplierResponce;
   }
 
   async updateSupplier(data: UpdateSupplierDto): Promise<Status> {
