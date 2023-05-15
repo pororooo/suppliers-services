@@ -36,7 +36,7 @@ message UpdateSupplierInput {
 }
 
 message DeleteSupplier {
-  int64 vat_nunmber = 1;
+  int64 vat_number = 1;
 }
 
 message SupplierResponce {

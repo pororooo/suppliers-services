@@ -27,18 +27,23 @@ export class SupplierService {
         },
       )
       .then((res) => {
+        this.logger.log({ ...res.data });
         return { ...res.data };
+      })
+      .catch((error) => {
+        this.logger.log(error);
+        return error;
       });
 
     return supplierResponce;
   }
 
-  async findByVatNumber(data: GetSupplierDto): Promise<any> {
+  async findByVatNumber(data: any): Promise<any> {
     const supplierResponce = await axios
       .get(
         `${this.configService.get<string>(
           'SUPPLIERS_DATA_SERVICE_URL',
-        )}/supplier/get`,
+        )}/supplier/getone?vat_number=${data.vatNumber.low}`,
         {
           auth: {
             username: this.configService.get<string>('HTTP_BASIC_USERNAME'),
@@ -47,28 +52,36 @@ export class SupplierService {
         },
       )
       .then((res) => {
+        this.logger.log({ ...res.data });
         return { ...res.data };
+      })
+      .catch((error) => {
+        this.logger.log(error);
+        return error;
       });
 
     return supplierResponce;
   }
 
-  async createSupplier(data: CreateSupplierDto): Promise<any> {
-    this.logger.log(`${this.configService.get<string>(
-      'SUPPLIERS_DATA_SERVICE_URL',
-    )}/supplier/add`);
+  async createSupplier(data: any): Promise<any> {
+    this.logger.log(
+      `${this.configService.get<string>(
+        'SUPPLIERS_DATA_SERVICE_URL',
+      )}/supplier/add`,
+    );
+    this.logger.log(data);
     const supplierResponce = await axios
       .post(
         `${this.configService.get<string>(
           'SUPPLIERS_DATA_SERVICE_URL',
         )}/supplier/add`,
         {
-          vat_number: data.vat_number,
+          vat_number: data.vatNumber.low,
           name: data.name,
           country: data.country,
           roles: data.roles,
           sector: data.sector,
-          certificate_link: data.certificate_link,
+          certificate_link: data.certificateLink,
         },
         {
           auth: {
@@ -81,26 +94,26 @@ export class SupplierService {
         return res.data;
       })
       .catch((error) => {
-        this.logger.log(error)
+        this.logger.log(error);
         return error;
       });
 
     return supplierResponce;
   }
 
-  async updateSupplier(data: UpdateSupplierDto): Promise<Status> {
+  async updateSupplier(data: any): Promise<any> {
     const supplierResponce = await axios
       .put(
         `${this.configService.get<string>(
           'SUPPLIERS_DATA_SERVICE_URL',
-        )}/supplier/update?vat_number=${data.vat_number}`,
+        )}/supplier/update?vat_number=${data.vatNumber.low}`,
         {
-          vat_number: data.vat_number,
+          vat_number: data.vatNumber.low,
           name: data.name,
           country: data.country,
           roles: data.roles,
           sector: data.sector,
-          certificate_link: data.certificate_link,
+          certificate_link: data.certificateLink,
         },
         {
           auth: {
@@ -119,12 +132,13 @@ export class SupplierService {
     return supplierResponce.status;
   }
 
-  async deleteSupplier(data: DeleteSupplierDto) {
+  async deleteSupplier(data: any) {
+    this.logger.log(data)
     const supplierResponce = await axios
       .delete(
         `${this.configService.get<string>(
           'SUPPLIERS_DATA_SERVICE_URL',
-        )}/supplier/remove?vat_number=${data.vat_number}`,
+        )}/supplier/remove?vat_number=${data.vatNumber.low}`,
         {
           auth: {
             username: this.configService.get<string>('HTTP_BASIC_USERNAME'),
@@ -134,6 +148,10 @@ export class SupplierService {
       )
       .then((res) => {
         return res.data;
+      })
+      .catch((error) => {
+        this.logger.log(error);
+        return error;
       });
 
     return supplierResponce;
