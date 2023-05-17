@@ -1,36 +1,46 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { SupplierInput } from './model/supplierInput.model';
+import { Injectable, Logger, OnModuleInit, Inject } from '@nestjs/common';
 import { SupplierOutput } from './model/supplierOutput.model';
-import { GrpcClientSupplierService } from 'src/grpc/client/client.server';
-
+import { CreateSupplierInput } from './model/createSupplierInput.model';
+import { ClientGrpc } from '@nestjs/microservices';
+import { SupplierGrpcClientInterface } from './interfaces/supplier.interface';
 @Injectable()
-export class SupplierService {
-  private grpcService: GrpcClientSupplierService;
+
+export class SupplierService implements OnModuleInit{
+  private supplierService: SupplierGrpcClientInterface;
   private readonly logger = new Logger(SupplierService.name);
+  constructor(@Inject('SUPPLIER_PACKAGE') private client: ClientGrpc) {}
 
-  async getAll(): Promise<SupplierOutput[]> {
-    this.logger.log('find all');
-    const supplier = new SupplierOutput();
-
-    return [supplier];
+    onModuleInit(): any {
+    this.supplierService =
+      this.client.getService<SupplierGrpcClientInterface>('SupplierService');
   }
-  async sendData(data: SupplierOutput): Promise<SupplierOutput[]> {
-    this.logger.log('send data');
-    console.log(`Received data: ${JSON.stringify(data)}`);
-    return [data];
-    // return this.grpcService.sendData(data);
-  }
-  // async sendData(data: SupplierOutput): Promise<SupplierOutput> {
-  //   this.logger.log('send data');
-  //   console.log(`Received data: ${JSON.stringify(data)}`);
 
-  //   try {
-  //     const result = await this.client.send('SendData', data).toPromise();
-  //     console.log(`Received result: ${JSON.stringify(result)}`);
-  //     return result;
-  //   } catch (error) {
-  //     console.error('Failed to send data', error);
-  //     throw error;
-  //   }
-  // }
+
+  async create({
+    vat_number,
+    name,
+    country,
+    roles,
+    sector,
+    certificate_link,
+  }: CreateSupplierInput): Promise<SupplierOutput> {
+
+  }
+
+  async update(): Promise<SupplierOutput> {
+    
+  }
+  async delete(): Promise<SupplierOutput> {
+    
+  }
+
+  async getAll(): Promise<SupplierOutput> {
+    
+  }
+
+  async getOne(): Promise<SupplierOutput> {
+    
+  }
+
+
 }

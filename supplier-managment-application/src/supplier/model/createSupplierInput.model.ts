@@ -1,7 +1,7 @@
 import { Field, Int, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class SupplierInput {
+export class CreateSupplierInput {
   @Field((type) => Int)
   vat_number: number;
 
@@ -19,13 +19,4 @@ export class SupplierInput {
 
   @Field()
   certificate_link: string;
-
-  // @Field(() => Buffer)
-  // content: Buffer;
-
-  @Field()
-  file_name: string;
-
-  @Field()
-  file_type: string;
 }

@@ -1,42 +1,22 @@
 syntax = "proto3";
 
-package managment;
+package supplier;
 
 service SupplierService {
-  rpc GetData (SupplierRequest) returns (SupplierResponce) {}
-  rpc find (commons.Query) returns (FindSuppliers) {}
-  rpc findByVatNumber (commons.vatNumber) returns (SupplierResponce) {}
+  rpc findAll (FindAll) returns (SupplierResponce) {}
+  rpc findByVatNumber (FindByVatNumber) returns (SupplierResponce) {}
   rpc create (CreateSupplierInput) returns (SupplierResponce) {}
   rpc update (UpdateSupplierInput) returns (SupplierResponce) {}
-  rpc delete (commons.Query) returns (commons.Count) {}
-
+  rpc delete (DeleteSupplier) returns (SupplierResponce) {}
 }
 
-message SupplierRequest {
+message FindAll {
+}
+
+message FindByVatNumber {
   int64 vat_number = 1;
-  string name = 2;
-  string country = 3;
-  string roles = 4;
-  string sector = 5;
-  string certificate_link = 6;
-  bytes content = 7;
-  string filename = 8;
-  string filetype = 9;
-
 }
 
-message SupplierResponce {
-  int64 vat_number = 1;
-  string name = 2;
-  string country = 3;
-  string roles = 4;
-  string sector = 5;
-  string certificate_link = 6;
-  bytes content = 7;
-  string filename = 8;
-  string filetype = 9;
-
-}
 message CreateSupplierInput {
   int64 vat_number = 1;
   string name = 2;
@@ -48,10 +28,18 @@ message CreateSupplierInput {
 
 message UpdateSupplierInput {
   int64 vat_number = 1;
-  SupplierRequest data = 2;
+  string name = 2;
+  string country = 3;
+  string roles = 4;
+  string sector = 5;
+  string certificate_link = 6;
 }
 
-message FindSupplier {
+message DeleteSupplier {
+  int64 vat_number = 1;
+}
+
+message SupplierResponce {
   int64 vat_number = 1;
   string name = 2;
   string country = 3;
@@ -59,3 +47,10 @@ message FindSupplier {
   string sector = 5;
   string certificate_link = 6;
 }
+
+message Status {
+  int32 status = 1;
+  string message = 2;
+}
+
+

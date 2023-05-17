@@ -4,12 +4,12 @@ import { join } from 'path';
 import { OnModuleInit, Logger } from '@nestjs/common';
 import { SupplierService } from 'src/supplier/supplier.service';
 import { SupplierOutput } from 'src/supplier/model/supplierOutput.model';
-import { FileOutput } from 'src/supplier/model/fileOutput.model';
+import { FileOutput } from 'src/file/model/fileOutput.model';
 import fetch from 'node-fetch';
 
 @Injectable()
-export class GrpcClientSupplierService implements OnModuleInit {
-  private readonly logger = new Logger(GrpcClientSupplierService.name);
+export class FileService implements OnModuleInit {
+  private readonly logger = new Logger(FileService.name);
 
   @Client({
     transport: Transport.GRPC,
@@ -49,11 +49,9 @@ export class GrpcClientSupplierService implements OnModuleInit {
 
   async sendData(data: SupplierOutput): Promise<SupplierOutput> {
     return data;
-    // return this.grpcService.sendData(data);
   }
   async sendFilePath(data: FileOutput): Promise<FileOutput> {
     this.logger.log(data)
     return data;
-    // return this.grpcService.sendData(data);
   }
 }

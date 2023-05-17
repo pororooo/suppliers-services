@@ -1,7 +1,7 @@
-import { Field, ObjectType, Int } from '@nestjs/graphql';
+import { Field, Int, InputType } from '@nestjs/graphql';
 
-@ObjectType()
-export class SupplierOutput {
+@InputType()
+export class UpdateSupplierInput {
   @Field((type) => Int)
   vat_number: number;
 
