@@ -3,41 +3,48 @@
 # ------------------------------------------------------
 
 type SupplierOutput {
-  vat_number: Int!
-  name: String!
-  country: String!
-  roles: String!
-  sector: String!
-  certificate_link: String!
-  file_name: String!
-  file_type: String!
+  vat_number: Int
+  name: String
+  country: String
+  roles: String
+  sector: String
+  certificate_link: String
 }
 
-type FileOutput {
-  supplierName: String
-  path: String
+type Response {
+  status: Int!
+  message: String!
 }
 
 type Query {
-  getFileInfo(supplierName: String, path: String): FileOutput!
+  getAllSuppliers: SupplierOutput!
+  getSupplier(vat_number: Float!): SupplierOutput!
 }
 
 type Mutation {
-  sendFileName(fileName: FileInput!): FileOutput!
-  sendDataToGrpcServer(supplierinput: SupplierInput!): SupplierOutput!
+  createSupplier(createSupplierInput: CreateSupplierInput!): Response!
+  updateSupplier(updateSupplierInput: UpdateSupplierInput!): Response!
+  deleteSupplier(deleteSupplierInput: DeleteSupplierInput!): Response!
 }
 
-input FileInput {
-  path: String!
-}
-
-input SupplierInput {
+input CreateSupplierInput {
   vat_number: Int!
   name: String!
   country: String!
   roles: String!
   sector: String!
   certificate_link: String!
-  file_name: String!
-  file_type: String!
+}
+
+input UpdateSupplierInput {
+  vat_number: Int!
+  name: String!
+  country: String!
+  roles: String!
+  sector: String!
+  certificate_link: String!
+}
+
+input DeleteSupplierInput {
+  vat_number: Int!
 }

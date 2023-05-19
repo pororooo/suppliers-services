@@ -30,6 +30,7 @@ export class SupplierController {
   @GrpcMethod('SupplierService', 'create')
   async create(data: CreateSupplierDto): Promise<any> {
     this.logger.log('create');
+    this.logger.log(data)
     return await this.supplierService.createSupplier(data);
   }
 

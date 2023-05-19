@@ -2,15 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { join } from 'path';
 import { AppModule } from './app.module';
-import { Logger } from 'nestjs-pino'
-import { LoggerService, INestMicroservice } from '@nestjs/common'
 
 async function bootstrap() {
   
   const app = await NestFactory.create(AppModule);
 
   app.connectMicroservice({
-    
+    name: 'SUPPLIER_PACKAGE',
     transport: Transport.GRPC,
     options: {
       url: 'localhost:50051',

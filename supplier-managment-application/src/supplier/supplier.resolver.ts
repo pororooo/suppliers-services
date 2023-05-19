@@ -1,62 +1,46 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { CreateSupplierInput } from './model/createSupplierInput.model';
-import { GrpcClientSupplierService } from 'src/grpc/client/client.server';
 import { Injectable, Logger } from '@nestjs/common';
 import { SupplierOutput } from './model/supplierOutput.model';
 import { SupplierService } from './supplier.service';
 import { UpdateSupplierInput } from './model/updateSupplierInput.model';
 import { Supplier } from './model/supplier.entity';
+import { Response } from './model/response.entity';
+import { DeleteSupplierInput } from './model/deleteSupplierInput.model';
 
 @Injectable()
 @Resolver((of) => Supplier)
 export class SupplierResolver {
-  constructor(
-    private readonly fileService: GrpcClientSupplierService,
-    private readonly supplierService: SupplierService,
-  ) {}
+  constructor(private readonly supplierService: SupplierService) {}
   private readonly logger = new Logger(SupplierResolver.name);
 
   @Query(() => SupplierOutput)
-  async getAllSuppliers(): Promise<SupplierOutput> {
+   getAllSuppliers() {
     this.logger.log('getAll');
-    const result = await this.supplierService.getAll();
-    this.logger.log(result);
-    return result;
+    return this.supplierService.getAll();
   }
   @Query(() => SupplierOutput)
-  async getSupplier(
-    @Args('vat_number') vat_number: string,
-  ): Promise<SupplierOutput> {
+   getSupplier(@Args('vat_number') vat_number: number) {
     this.logger.log('getOneSupplier');
-    const result = await this.supplierService.getOne(vat_number);
-    this.logger.log(result);
-    return result;
+    return this.supplierService.getOne(vat_number);
   }
-  @Mutation(() => SupplierOutput)
-  async createSupplier(
+  @Mutation(() => Response)
+   createSupplier(
     @Args('createSupplierInput') createSupplierInput: CreateSupplierInput,
-  ): Promise<SupplierOutput> {
+  ) {
     this.logger.log('create');
-    const result = await this.supplierService.create(createSupplierInput);
-    this.logger.log(result);
-    return result;
+    return this.supplierService.create(createSupplierInput);
   }
-  @Mutation(() => SupplierOutput)
-  async updateSupplier(
+  @Mutation(() => Response)
+   updateSupplier(
     @Args('updateSupplierInput') updateSupplierInput: UpdateSupplierInput,
-  ): Promise<SupplierOutput> {
+  ) {
     this.logger.log('update');
-    const result = await this.supplierService.update(updateSupplierInput);
-    this.logger.log(result);
-    return result;
+    return this.supplierService.update(updateSupplierInput);
   }
-  @Mutation(() => SupplierOutput)
-  async deleteSupplier(
-    @Args('vat_number') vat_number: string,
-  ): Promise<SupplierOutput> {
+  @Mutation(() => Response)
+   deleteSupplier(@Args('deleteSupplierInput') deleteSupplierInput: DeleteSupplierInput) {
     this.logger.log('delete');
-    const result = await this.supplierService.delete(vat_number);
-    this.logger.log(result);
-    return result;
+    return this.supplierService.delete(deleteSupplierInput);
   }
 }

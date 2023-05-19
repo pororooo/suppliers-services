@@ -1,11 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSupplierDto } from './dto/createSupplier.dto';
-import { GetSupplierDto } from './dto/getSupplier.dto';
-import { UpdateSupplierDto } from './dto/updateSupplier.dto';
-import { DeleteSupplierDto } from './dto/deleteSupplier.dto';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
-import { Status } from './dto/statusResponce.dto';
 import { Logger } from '@nestjs/common';
 
 @Injectable()
@@ -76,12 +71,12 @@ export class SupplierService {
           'SUPPLIERS_DATA_SERVICE_URL',
         )}/supplier/add`,
         {
-          vat_number: data.vatNumber.low,
+          vat_number: data.vat_number,
           name: data.name,
           country: data.country,
           roles: data.roles,
           sector: data.sector,
-          certificate_link: data.certificateLink,
+          certificate_link: data.certificate_link,
         },
         {
           auth: {
@@ -94,7 +89,6 @@ export class SupplierService {
         return res.data;
       })
       .catch((error) => {
-        this.logger.log(error);
         return error;
       });
 
@@ -123,13 +117,13 @@ export class SupplierService {
         },
       )
       .then((res) => {
-        return res.status;
+        return res.data;
       })
       .catch((error) => {
         return error;
       });
 
-    return supplierResponce.status;
+    return supplierResponce;
   }
 
   async deleteSupplier(data: any) {
@@ -150,7 +144,6 @@ export class SupplierService {
         return res.data;
       })
       .catch((error) => {
-        this.logger.log(error);
         return error;
       });
 

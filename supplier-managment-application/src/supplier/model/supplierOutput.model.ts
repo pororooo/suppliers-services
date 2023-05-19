@@ -2,21 +2,21 @@ import { Field, ObjectType, Int } from '@nestjs/graphql';
 
 @ObjectType()
 export class SupplierOutput {
-  @Field((type) => Int)
+  @Field((type) => Int, { nullable: true })
   vat_number: number;
 
-  @Field()
+  @Field({ nullable: true })
   name: string;
 
-  @Field()
+  @Field({ nullable: true })
   country: string;
 
-  @Field()
+  @Field({ nullable: true })
   roles: string;
 
-  @Field()
+  @Field({ nullable: true })
   sector: string;
 
-  @Field()
+  @Field({ nullable: true })
   certificate_link: string;
 }

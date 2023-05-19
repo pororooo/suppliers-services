@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SupplierService } from './supplier.service';
 import { SupplierResolver } from './supplier.resolver';
-// import { GrpcClientSupplierService } from 'src/grpc/client/client.server';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
 
@@ -14,7 +13,7 @@ import { join } from 'path';
         options: {
           package: 'supplier',
           protoPath: join(__dirname, '../grpc/proto/supplier.proto'),
-          url: 'localhost:5000'
+          url: 'localhost:50051'
         },
       },
     ]),
