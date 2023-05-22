@@ -2,13 +2,14 @@ import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
+import { GetSupplierDto } from './dto/getSupplier.dto';
 
 @Injectable()
 export class SupplierService {
   constructor(private readonly configService: ConfigService) {}
   private readonly logger = new Logger(SupplierService.name);
 
-  async findAll() {
+  async findAll(): Promise<any> {
     const supplierResponce = await axios
       .get(
         `${this.configService.get<string>(
@@ -22,8 +23,9 @@ export class SupplierService {
         },
       )
       .then((res) => {
-        this.logger.log({ ...res.data });
-        return { ...res.data };
+        const suppliers = { ...res.data };
+        this.logger.log(suppliers);
+        return suppliers;
       })
       .catch((error) => {
         this.logger.log(error);
@@ -38,7 +40,7 @@ export class SupplierService {
       .get(
         `${this.configService.get<string>(
           'SUPPLIERS_DATA_SERVICE_URL',
-        )}/supplier/getone?vat_number=${data.vatNumber.low}`,
+        )}/supplier/getone?vat_number=${String(data.vatNumber)}`,
         {
           auth: {
             username: this.configService.get<string>('HTTP_BASIC_USERNAME'),
@@ -64,19 +66,26 @@ export class SupplierService {
         'SUPPLIERS_DATA_SERVICE_URL',
       )}/supplier/add`,
     );
-    this.logger.log(data);
+    this.logger.log(
+      String(data.vatNumber),
+      data.name,
+      data.country,
+      data.roles,
+      data.sector,
+      data.certificateLink,
+    );
     const supplierResponce = await axios
       .post(
         `${this.configService.get<string>(
           'SUPPLIERS_DATA_SERVICE_URL',
         )}/supplier/add`,
         {
-          vat_number: data.vat_number,
+          vat_number: Number(String(data.vatNumber)),
           name: data.name,
           country: data.country,
           roles: data.roles,
           sector: data.sector,
-          certificate_link: data.certificate_link,
+          certificate_link: data.certificateLink,
         },
         {
           auth: {
@@ -89,6 +98,7 @@ export class SupplierService {
         return res.data;
       })
       .catch((error) => {
+        this.logger.log(error);
         return error;
       });
 
@@ -100,9 +110,9 @@ export class SupplierService {
       .put(
         `${this.configService.get<string>(
           'SUPPLIERS_DATA_SERVICE_URL',
-        )}/supplier/update?vat_number=${data.vatNumber.low}`,
+        )}/supplier/update?vat_number=${String(data.vatNumber)}`,
         {
-          vat_number: data.vatNumber.low,
+          vat_number: Number(String(data.vatNumber)),
           name: data.name,
           country: data.country,
           roles: data.roles,
@@ -126,13 +136,13 @@ export class SupplierService {
     return supplierResponce;
   }
 
-  async deleteSupplier(data: any) {
-    this.logger.log(data)
+  async deleteSupplier(data: any): Promise<any> {
+    this.logger.log(data);
     const supplierResponce = await axios
       .delete(
         `${this.configService.get<string>(
           'SUPPLIERS_DATA_SERVICE_URL',
-        )}/supplier/remove?vat_number=${data.vatNumber.low}`,
+        )}/supplier/remove?vat_number=${String(data.vatNumber)}`,
         {
           auth: {
             username: this.configService.get<string>('HTTP_BASIC_USERNAME'),
@@ -146,7 +156,6 @@ export class SupplierService {
       .catch((error) => {
         return error;
       });
-
     return supplierResponce;
   }
 }

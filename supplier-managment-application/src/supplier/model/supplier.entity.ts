@@ -3,7 +3,7 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 export class Supplier {
   @Field(() => Int)
-  vat_number: number;
+  vatNumber: number;
 
   @Field(() => String)
   name: string;
@@ -18,5 +18,5 @@ export class Supplier {
   sector: string;
 
   @Field(() => String)
-  certificate_link: string;
+  certificateLink: string;
 }

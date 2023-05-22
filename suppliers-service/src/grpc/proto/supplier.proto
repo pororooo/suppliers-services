@@ -14,38 +14,38 @@ message FindAll {
 }
 
 message FindByVatNumber {
-  int64 vat_number = 1;
+  int64 vatNumber = 1;
 }
 
 message CreateSupplierInput {
-  int64 vat_number = 1;
+  int64 vatNumber = 1;
   string name = 2;
   string country = 3;
   string roles = 4;
   string sector = 5;
-  string certificate_link = 6;
+  string certificateLink = 6;
 }
 
 message UpdateSupplierInput {
-  int64 vat_number = 1;
+  int64 vatNumber = 1;
   string name = 2;
   string country = 3;
   string roles = 4;
   string sector = 5;
-  string certificate_link = 6;
+  string certificateLink = 6;
 }
 
 message DeleteSupplier {
-  int64 vat_number = 1;
+  int64 vatNumber = 1;
 }
 
 message SupplierResponce {
-  int64 vat_number = 1;
+  int64 vatNumber = 1;
   string name = 2;
   string country = 3;
   string roles = 4;
   string sector = 5;
-  string certificate_link = 6;
+  string certificateLink = 6;
 }
 
 message Status {

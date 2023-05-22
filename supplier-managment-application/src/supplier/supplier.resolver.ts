@@ -1,9 +1,8 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { CreateSupplierInput } from './model/createSupplierInput.model';
+import { SupplierInput } from './model/supplierInput.model';
 import { Injectable, Logger } from '@nestjs/common';
 import { SupplierOutput } from './model/supplierOutput.model';
 import { SupplierService } from './supplier.service';
-import { UpdateSupplierInput } from './model/updateSupplierInput.model';
 import { Supplier } from './model/supplier.entity';
 import { Response } from './model/response.entity';
 import { DeleteSupplierInput } from './model/deleteSupplierInput.model';
@@ -20,20 +19,21 @@ export class SupplierResolver {
     return this.supplierService.getAll();
   }
   @Query(() => SupplierOutput)
-   getSupplier(@Args('vat_number') vat_number: number) {
+   getSupplier(@Args('getOneSupplierInput') getOneSupplierInput: DeleteSupplierInput) {
     this.logger.log('getOneSupplier');
-    return this.supplierService.getOne(vat_number);
+    return this.supplierService.getOne(getOneSupplierInput);
   }
   @Mutation(() => Response)
    createSupplier(
-    @Args('createSupplierInput') createSupplierInput: CreateSupplierInput,
+    @Args('createSupplierInput') createSupplierInput: SupplierInput,
   ) {
     this.logger.log('create');
+    this.logger.log(createSupplierInput)
     return this.supplierService.create(createSupplierInput);
   }
   @Mutation(() => Response)
    updateSupplier(
-    @Args('updateSupplierInput') updateSupplierInput: UpdateSupplierInput,
+    @Args('updateSupplierInput') updateSupplierInput: SupplierInput,
   ) {
     this.logger.log('update');
     return this.supplierService.update(updateSupplierInput);

@@ -1,9 +1,9 @@
 import { Field, Int, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class CreateSupplierInput {
+export class SupplierInput {
   @Field((type) => Int)
-  vat_number: number;
+  vatNumber: number;
 
   @Field()
   name: string;
@@ -18,5 +18,5 @@ export class CreateSupplierInput {
   sector: string;
 
   @Field()
-  certificate_link: string;
+  certificateLink: string;
 }

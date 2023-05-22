@@ -3,12 +3,12 @@
 # ------------------------------------------------------
 
 type SupplierOutput {
-  vat_number: Int
+  vatNumber: Int
   name: String
   country: String
   roles: String
   sector: String
-  certificate_link: String
+  certificateLink: String
 }
 
 type Response {
@@ -18,33 +18,24 @@ type Response {
 
 type Query {
   getAllSuppliers: SupplierOutput!
-  getSupplier(vat_number: Float!): SupplierOutput!
-}
-
-type Mutation {
-  createSupplier(createSupplierInput: CreateSupplierInput!): Response!
-  updateSupplier(updateSupplierInput: UpdateSupplierInput!): Response!
-  deleteSupplier(deleteSupplierInput: DeleteSupplierInput!): Response!
-}
-
-input CreateSupplierInput {
-  vat_number: Int!
-  name: String!
-  country: String!
-  roles: String!
-  sector: String!
-  certificate_link: String!
-}
-
-input UpdateSupplierInput {
-  vat_number: Int!
-  name: String!
-  country: String!
-  roles: String!
-  sector: String!
-  certificate_link: String!
+  getSupplier(getOneSupplierInput: DeleteSupplierInput!): SupplierOutput!
 }
 
 input DeleteSupplierInput {
-  vat_number: Int!
+  vatNumber: Int!
+}
+
+type Mutation {
+  createSupplier(createSupplierInput: SupplierInput!): Response!
+  updateSupplier(updateSupplierInput: SupplierInput!): Response!
+  deleteSupplier(deleteSupplierInput: DeleteSupplierInput!): Response!
+}
+
+input SupplierInput {
+  vatNumber: Int!
+  name: String!
+  country: String!
+  roles: String!
+  sector: String!
+  certificateLink: String!
 }

@@ -16,13 +16,13 @@ export class SupplierController {
   ) {}
 
   @GrpcMethod('SupplierService', 'findAll')
-  async findAll(): Promise<Status> {
+  async findAll(): Promise<any> {
     this.logger.log('findAll');
     return await this.supplierService.findAll();
   }
 
   @GrpcMethod('SupplierService', 'findByVatNumber')
-  async findByVatNumber(data: GetSupplierDto): Promise<Status> {
+  async findByVatNumber(data: GetSupplierDto): Promise<any> {
     this.logger.log('findByVatNumber');
     return await this.supplierService.findByVatNumber(data);
   }

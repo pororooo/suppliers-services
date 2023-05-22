@@ -1,9 +1,7 @@
 import { Injectable, Logger, OnModuleInit, Inject } from '@nestjs/common';
-import { SupplierOutput } from './model/supplierOutput.model';
-import { CreateSupplierInput } from './model/createSupplierInput.model';
+import { SupplierInput } from './model/supplierInput.model';
 import { ClientGrpc } from '@nestjs/microservices';
 import { SupplierGrpcClientInterface } from './interfaces/supplier.interface';
-import { UpdateSupplierInput } from './model/updateSupplierInput.model';
 import { Response } from './model/response.entity';
 import { DeleteSupplierInput } from './model/deleteSupplierInput.model';
 @Injectable()
@@ -16,34 +14,11 @@ export class SupplierService implements OnModuleInit {
     this.supplierService =
       this.client.getService<SupplierGrpcClientInterface>('SupplierService');
   }
-  async create({
-    vat_number,
-    name,
-    country,
-    roles,
-    sector,
-    certificate_link,
-  }: CreateSupplierInput): Promise<Response> {
+  async create(createSupplierInput: SupplierInput): Promise<any> {
     return new Promise((res, rej) => {
-      this.logger.log(
-        vat_number,
-        name,
-        country,
-        roles,
-        sector,
-        certificate_link,
-      );
-      const createSupplier = this.supplierService.create({
-        vat_number,
-        name,
-        country,
-        roles,
-        sector,
-        certificate_link,
-      });
+      const createSupplier = this.supplierService.create(createSupplierInput);
       createSupplier.subscribe({
         next: (data) => {
-          this.logger.log(data);
           res(data);
         },
         error: (error) => {
@@ -54,21 +29,21 @@ export class SupplierService implements OnModuleInit {
   }
 
   async update({
-    vat_number,
+    vatNumber,
     name,
     country,
     roles,
     sector,
-    certificate_link,
-  }: UpdateSupplierInput): Promise<Response> {
+    certificateLink,
+  }: SupplierInput): Promise<Response> {
     return new Promise((res, rej) => {
       const updateSupplier = this.supplierService.update({
-        vat_number,
+        vatNumber,
         name,
         country,
         roles,
         sector,
-        certificate_link,
+        certificateLink,
       });
       updateSupplier.subscribe({
         next: (data) => {
@@ -82,10 +57,10 @@ export class SupplierService implements OnModuleInit {
     });
   }
 
-  async delete({ vat_number }: DeleteSupplierInput): Promise<Response> {
+  async delete({ vatNumber }: DeleteSupplierInput): Promise<Response> {
     return new Promise((res, rej) => {
       const deleteSupplier = this.supplierService.delete({
-        vat_number,
+        vatNumber,
       });
       deleteSupplier.subscribe({
         next: (data) => {
@@ -99,13 +74,13 @@ export class SupplierService implements OnModuleInit {
     });
   }
 
-  async getAll(): Promise<Response> {
+  async getAll(): Promise<any> {
     return new Promise((res, rej) => {
       const allSuppliers = this.supplierService.findAll({});
       allSuppliers.subscribe({
         next: (data) => {
           this.logger.log(data);
-          res(data);
+          res(data.suppliers);
         },
         error: (error) => {
           rej(error);
@@ -113,9 +88,10 @@ export class SupplierService implements OnModuleInit {
       });
     });
   }
-  async getOne(vat_number: number): Promise<Response> {
+  async getOne({ vatNumber }: DeleteSupplierInput): Promise<Response> {
+    this.logger.log(vatNumber);
     return new Promise((res, rej) => {
-      const oneSupplier = this.supplierService.findByVatNumber({ vat_number });
+      const oneSupplier = this.supplierService.findByVatNumber({ vatNumber });
       oneSupplier.subscribe({
         next: (data) => {
           this.logger.log(data);
