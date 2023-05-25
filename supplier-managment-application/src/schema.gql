@@ -13,11 +13,10 @@ type SupplierOutput {
 
 type Response {
   status: Int!
-  message: String!
 }
 
 type Query {
-  getAllSuppliers: SupplierOutput!
+  getAllSuppliers: [SupplierOutput!]
   getSupplier(getOneSupplierInput: DeleteSupplierInput!): SupplierOutput!
 }
 

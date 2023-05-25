@@ -10,29 +10,35 @@ export class SupplierService {
   private readonly logger = new Logger(SupplierService.name);
 
   async findAll(): Promise<any> {
-    const supplierResponce = await axios
-      .get(
-        `${this.configService.get<string>(
-          'SUPPLIERS_DATA_SERVICE_URL',
-        )}/supplier/get`,
-        {
-          auth: {
-            username: this.configService.get<string>('HTTP_BASIC_USERNAME'),
-            password: this.configService.get<string>('HTTP_BASIC_PASSWORD'),
-          },
+    const supplierResponce = await axios.get(
+      `${this.configService.get<string>(
+        'SUPPLIERS_DATA_SERVICE_URL',
+      )}/supplier/get`,
+      {
+        auth: {
+          username: this.configService.get<string>('HTTP_BASIC_USERNAME'),
+          password: this.configService.get<string>('HTTP_BASIC_PASSWORD'),
         },
-      )
-      .then((res) => {
-        const suppliers = { ...res.data };
-        this.logger.log(suppliers);
-        return suppliers;
-      })
-      .catch((error) => {
-        this.logger.log(error);
-        return error;
-      });
+      },
+    );
+    const response = { data: supplierResponce.data, error: false };
+    const modifiedArray = response.data.map((supplier) => {
+      return { ...supplier };
+    });
 
-    return supplierResponce;
+    const suppliers = modifiedArray.map(obj => {
+      return {
+        vatNumber: obj.vat_number,
+        name: obj.name,
+        country: obj.country,
+        roles: obj.roles,
+        sector: obj.sector,
+        certificateLink: obj.certificate_link
+      };
+    });
+
+    this.logger.log(suppliers);
+    return { suppliers };
   }
 
   async findByVatNumber(data: any): Promise<any> {
@@ -49,8 +55,18 @@ export class SupplierService {
         },
       )
       .then((res) => {
-        this.logger.log({ ...res.data });
-        return { ...res.data };
+        const transformedObj: any = {};
+
+        for (const key in res.data) {
+          if (res.data.hasOwnProperty(key)) {
+            const transformedKey = key.replace(/_(\w)/g, (_, char) =>
+              char.toUpperCase(),
+            );
+            transformedObj[transformedKey] = res.data[key];
+          }
+        }
+        this.logger.log({ ...transformedObj });
+        return { ...transformedObj };
       })
       .catch((error) => {
         this.logger.log(error);
@@ -95,7 +111,7 @@ export class SupplierService {
         },
       )
       .then((res) => {
-        return res.data;
+        return res.status;
       })
       .catch((error) => {
         this.logger.log(error);

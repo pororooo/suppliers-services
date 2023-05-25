@@ -5,7 +5,7 @@ import { GetSupplierDto } from './dto/getSupplier.dto';
 import { CreateSupplierDto } from './dto/createSupplier.dto';
 import { UpdateSupplierDto } from './dto/updateSupplier.dto';
 import { DeleteSupplierDto } from './dto/deleteSupplier.dto';
-import { Status } from './dto/statusResponce.dto';
+import { Status } from './dto/statusResponse.dto';
 
 @Controller()
 export class SupplierController {
@@ -28,7 +28,7 @@ export class SupplierController {
   }
 
   @GrpcMethod('SupplierService', 'create')
-  async create(data: CreateSupplierDto): Promise<any> {
+  async create(data: CreateSupplierDto): Promise<Status> {
     this.logger.log('create');
     this.logger.log(data)
     return await this.supplierService.createSupplier(data);

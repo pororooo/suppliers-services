@@ -13,33 +13,37 @@ export class SupplierResolver {
   constructor(private readonly supplierService: SupplierService) {}
   private readonly logger = new Logger(SupplierResolver.name);
 
-  @Query(() => SupplierOutput)
-   getAllSuppliers() {
+  @Query(() => [SupplierOutput], { nullable: true })
+  getAllSuppliers() {
     this.logger.log('getAll');
     return this.supplierService.getAll();
   }
   @Query(() => SupplierOutput)
-   getSupplier(@Args('getOneSupplierInput') getOneSupplierInput: DeleteSupplierInput) {
+  getSupplier(
+    @Args('getOneSupplierInput') getOneSupplierInput: DeleteSupplierInput,
+  ) {
     this.logger.log('getOneSupplier');
     return this.supplierService.getOne(getOneSupplierInput);
   }
   @Mutation(() => Response)
-   createSupplier(
+  createSupplier(
     @Args('createSupplierInput') createSupplierInput: SupplierInput,
   ) {
     this.logger.log('create');
-    this.logger.log(createSupplierInput)
+    this.logger.log(createSupplierInput);
     return this.supplierService.create(createSupplierInput);
   }
   @Mutation(() => Response)
-   updateSupplier(
+  updateSupplier(
     @Args('updateSupplierInput') updateSupplierInput: SupplierInput,
   ) {
     this.logger.log('update');
     return this.supplierService.update(updateSupplierInput);
   }
   @Mutation(() => Response)
-   deleteSupplier(@Args('deleteSupplierInput') deleteSupplierInput: DeleteSupplierInput) {
+  deleteSupplier(
+    @Args('deleteSupplierInput') deleteSupplierInput: DeleteSupplierInput,
+  ) {
     this.logger.log('delete');
     return this.supplierService.delete(deleteSupplierInput);
   }

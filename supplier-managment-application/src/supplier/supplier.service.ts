@@ -19,7 +19,7 @@ export class SupplierService implements OnModuleInit {
       const createSupplier = this.supplierService.create(createSupplierInput);
       createSupplier.subscribe({
         next: (data) => {
-          res(data);
+          res(data.status);
         },
         error: (error) => {
           rej(error);
@@ -79,8 +79,15 @@ export class SupplierService implements OnModuleInit {
       const allSuppliers = this.supplierService.findAll({});
       allSuppliers.subscribe({
         next: (data) => {
-          this.logger.log(data);
-          res(data.suppliers);
+          const suppliers = data.suppliers.map((obj) => {
+            const vatNumber = obj.vatNumber.low;
+            return {
+              ...obj,
+              vatNumber,
+            };
+          });
+          this.logger.log(suppliers);
+          res(suppliers);
         },
         error: (error) => {
           rej(error);
@@ -94,8 +101,10 @@ export class SupplierService implements OnModuleInit {
       const oneSupplier = this.supplierService.findByVatNumber({ vatNumber });
       oneSupplier.subscribe({
         next: (data) => {
-          this.logger.log(data);
-          res(data);
+          const { vatNumber, ...rest } = data;
+          const supplier = { vatNumber: vatNumber.low, ...rest };
+          this.logger.log(supplier);
+          res(supplier);
         },
         error: (error) => {
           rej(error);

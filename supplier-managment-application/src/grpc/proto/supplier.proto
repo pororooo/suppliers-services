@@ -3,11 +3,11 @@ syntax = "proto3";
 package supplier;
 
 service SupplierService {
-  rpc findAll (FindAll) returns (SupplierResponce) {}
-  rpc findByVatNumber (FindByVatNumber) returns (SupplierResponce) {}
-  rpc create (CreateSupplierInput) returns (SupplierResponce) {}
-  rpc update (UpdateSupplierInput) returns (SupplierResponce) {}
-  rpc delete (DeleteSupplier) returns (SupplierResponce) {}
+  rpc findAll (FindAll) returns (SupplierResponseList) {}
+  rpc findByVatNumber (FindByVatNumber) returns (SupplierResponse) {}
+  rpc create (CreateSupplierInput) returns (SupplierResponse) {}
+  rpc update (UpdateSupplierInput) returns (SupplierResponse) {}
+  rpc delete (DeleteSupplier) returns (SupplierResponse) {}
 }
 
 message FindAll {
@@ -26,6 +26,20 @@ message CreateSupplierInput {
   string certificateLink = 6;
 }
 
+message SupplierResponse {
+  int64 vatNumber = 1;
+  string name = 2;
+  string country = 3;
+  string roles = 4;
+  string sector = 5;
+  string certificateLink = 6;
+}
+
+message SupplierResponseList {
+  repeated SupplierResponse suppliers = 1;
+}
+
+
 message UpdateSupplierInput {
   int64 vatNumber = 1;
   string name = 2;
@@ -39,14 +53,6 @@ message DeleteSupplier {
   int64 vatNumber = 1;
 }
 
-message SupplierResponce {
-  int64 vatNumber = 1;
-  string name = 2;
-  string country = 3;
-  string roles = 4;
-  string sector = 5;
-  string certificateLink = 6;
-}
 
 message Status {
   int32 status = 1;

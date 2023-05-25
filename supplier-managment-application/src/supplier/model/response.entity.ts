@@ -4,7 +4,4 @@ import { Field, Int, ObjectType } from '@nestjs/graphql';
 export class Response {
   @Field(() => Int)
   status: number;
-
-  @Field(()=> String)
-  message: string;
 }
