@@ -28,9 +28,8 @@ export class SupplierController {
   }
 
   @GrpcMethod('SupplierService', 'create')
-  async create(data: CreateSupplierDto): Promise<Status> {
+  async create(data: CreateSupplierDto): Promise<any> {
     this.logger.log('create');
-    this.logger.log(data)
     return await this.supplierService.createSupplier(data);
   }
 
@@ -41,7 +40,7 @@ export class SupplierController {
   }
 
   @GrpcMethod('SupplierService', 'delete')
-  async delete(data: DeleteSupplierDto): Promise<any> {
+  async delete(data: DeleteSupplierDto): Promise<Status> {
     this.logger.log('delete');
     return await this.supplierService.deleteSupplier(data);
   }

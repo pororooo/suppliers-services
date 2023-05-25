@@ -3,6 +3,8 @@ import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
 import { GetSupplierDto } from './dto/getSupplier.dto';
+import { Status } from './dto/statusResponse.dto';
+import { DeleteSupplierDto } from './dto/deleteSupplier.dto';
 
 @Injectable()
 export class SupplierService {
@@ -26,18 +28,17 @@ export class SupplierService {
       return { ...supplier };
     });
 
-    const suppliers = modifiedArray.map(obj => {
+    const suppliers = modifiedArray.map((obj) => {
       return {
         vatNumber: obj.vat_number,
         name: obj.name,
         country: obj.country,
         roles: obj.roles,
         sector: obj.sector,
-        certificateLink: obj.certificate_link
+        certificateLink: obj.certificate_link,
       };
     });
 
-    this.logger.log(suppliers);
     return { suppliers };
   }
 
@@ -77,19 +78,6 @@ export class SupplierService {
   }
 
   async createSupplier(data: any): Promise<any> {
-    this.logger.log(
-      `${this.configService.get<string>(
-        'SUPPLIERS_DATA_SERVICE_URL',
-      )}/supplier/add`,
-    );
-    this.logger.log(
-      String(data.vatNumber),
-      data.name,
-      data.country,
-      data.roles,
-      data.sector,
-      data.certificateLink,
-    );
     const supplierResponce = await axios
       .post(
         `${this.configService.get<string>(
@@ -111,7 +99,15 @@ export class SupplierService {
         },
       )
       .then((res) => {
-        return res.status;
+        const suppliers = {
+          vatNumber: res.data.vat_number,
+          name: res.data.name,
+          country: res.data.country,
+          roles: res.data.roles,
+          sector: res.data.sector,
+          certificateLink: res.data.certificate_link,
+        };
+        return suppliers;
       })
       .catch((error) => {
         this.logger.log(error);
@@ -143,7 +139,15 @@ export class SupplierService {
         },
       )
       .then((res) => {
-        return res.data;
+        const suppliers = {
+          vatNumber: res.data.vat_number,
+          name: res.data.name,
+          country: res.data.country,
+          roles: res.data.roles,
+          sector: res.data.sector,
+          certificateLink: res.data.certificate_link,
+        };
+        return suppliers;
       })
       .catch((error) => {
         return error;
@@ -152,8 +156,8 @@ export class SupplierService {
     return supplierResponce;
   }
 
-  async deleteSupplier(data: any): Promise<any> {
-    this.logger.log(data);
+  async deleteSupplier(data: any): Promise<Status> {
+
     const supplierResponce = await axios
       .delete(
         `${this.configService.get<string>(
@@ -167,7 +171,7 @@ export class SupplierService {
         },
       )
       .then((res) => {
-        return res.data;
+        return res;
       })
       .catch((error) => {
         return error;

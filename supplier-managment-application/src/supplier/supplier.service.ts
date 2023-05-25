@@ -19,7 +19,10 @@ export class SupplierService implements OnModuleInit {
       const createSupplier = this.supplierService.create(createSupplierInput);
       createSupplier.subscribe({
         next: (data) => {
-          res(data.status);
+          const { vatNumber, ...rest } = data;
+          const supplier = { vatNumber: vatNumber.low, ...rest };
+          this.logger.log(supplier);
+          res(supplier);
         },
         error: (error) => {
           rej(error);
@@ -35,7 +38,7 @@ export class SupplierService implements OnModuleInit {
     roles,
     sector,
     certificateLink,
-  }: SupplierInput): Promise<Response> {
+  }: SupplierInput): Promise<any> {
     return new Promise((res, rej) => {
       const updateSupplier = this.supplierService.update({
         vatNumber,
@@ -47,8 +50,10 @@ export class SupplierService implements OnModuleInit {
       });
       updateSupplier.subscribe({
         next: (data) => {
-          this.logger.log(data);
-          res(data);
+          const { vatNumber, ...rest } = data;
+          const supplier = { vatNumber: vatNumber.low, ...rest };
+          this.logger.log(supplier);
+          res(supplier);
         },
         error: (error) => {
           rej(error);
@@ -95,7 +100,7 @@ export class SupplierService implements OnModuleInit {
       });
     });
   }
-  async getOne({ vatNumber }: DeleteSupplierInput): Promise<Response> {
+  async getOne({ vatNumber }: DeleteSupplierInput): Promise<any> {
     this.logger.log(vatNumber);
     return new Promise((res, rej) => {
       const oneSupplier = this.supplierService.findByVatNumber({ vatNumber });

@@ -25,15 +25,14 @@ export class SupplierResolver {
     this.logger.log('getOneSupplier');
     return this.supplierService.getOne(getOneSupplierInput);
   }
-  @Mutation(() => Response)
+  @Mutation(() => SupplierOutput)
   createSupplier(
     @Args('createSupplierInput') createSupplierInput: SupplierInput,
   ) {
     this.logger.log('create');
-    this.logger.log(createSupplierInput);
     return this.supplierService.create(createSupplierInput);
   }
-  @Mutation(() => Response)
+  @Mutation(() => SupplierOutput)
   updateSupplier(
     @Args('updateSupplierInput') updateSupplierInput: SupplierInput,
   ) {

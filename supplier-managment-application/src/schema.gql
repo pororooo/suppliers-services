@@ -25,8 +25,8 @@ input DeleteSupplierInput {
 }
 
 type Mutation {
-  createSupplier(createSupplierInput: SupplierInput!): Response!
-  updateSupplier(updateSupplierInput: SupplierInput!): Response!
+  createSupplier(createSupplierInput: SupplierInput!): SupplierOutput!
+  updateSupplier(updateSupplierInput: SupplierInput!): SupplierOutput!
   deleteSupplier(deleteSupplierInput: DeleteSupplierInput!): Response!
 }
 
