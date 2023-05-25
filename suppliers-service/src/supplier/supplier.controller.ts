@@ -11,9 +11,7 @@ import { Status } from './dto/statusResponse.dto';
 export class SupplierController {
   private readonly logger = new Logger(SupplierController.name);
 
-  constructor(
-    private readonly supplierService: SupplierService,
-  ) {}
+  constructor(private readonly supplierService: SupplierService) {}
 
   @GrpcMethod('SupplierService', 'findAll')
   async findAll(): Promise<any> {

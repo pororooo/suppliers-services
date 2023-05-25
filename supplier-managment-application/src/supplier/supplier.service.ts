@@ -1,88 +1,87 @@
-import { Injectable, Logger, OnModuleInit, Inject } from '@nestjs/common';
+import { Injectable, OnModuleInit, Inject } from '@nestjs/common';
 import { SupplierInput } from './model/supplierInput.model';
 import { ClientGrpc } from '@nestjs/microservices';
 import { SupplierGrpcClientInterface } from './interfaces/supplier.interface';
 import { Response } from './model/response.entity';
 import { DeleteSupplierInput } from './model/deleteSupplierInput.model';
+import { SupplierOutput } from './model/supplierOutput.model';
+import { Observable } from 'rxjs';
+
 @Injectable()
 export class SupplierService implements OnModuleInit {
   private supplierService: SupplierGrpcClientInterface;
-  private readonly logger = new Logger(SupplierService.name);
   constructor(@Inject('SUPPLIER_PACKAGE') private client: ClientGrpc) {}
 
   onModuleInit(): any {
     this.supplierService =
       this.client.getService<SupplierGrpcClientInterface>('SupplierService');
   }
-  async create(createSupplierInput: SupplierInput): Promise<any> {
-    return new Promise((res, rej) => {
+  async create(createSupplierInput: SupplierInput) {
+    return new Observable<SupplierOutput>((observer) => {
       const createSupplier = this.supplierService.create(createSupplierInput);
-      createSupplier.subscribe({
+      const subscription = createSupplier.subscribe({
         next: (data) => {
           const { vatNumber, ...rest } = data;
           const supplier = { vatNumber: vatNumber.low, ...rest };
-          this.logger.log(supplier);
-          res(supplier);
+
+          observer.next(supplier);
+          observer.complete();
         },
         error: (error) => {
-          rej(error);
+          observer.error(error);
         },
       });
+
+      return () => {
+        subscription.unsubscribe();
+      };
     });
   }
 
-  async update({
-    vatNumber,
-    name,
-    country,
-    roles,
-    sector,
-    certificateLink,
-  }: SupplierInput): Promise<any> {
-    return new Promise((res, rej) => {
-      const updateSupplier = this.supplierService.update({
-        vatNumber,
-        name,
-        country,
-        roles,
-        sector,
-        certificateLink,
-      });
-      updateSupplier.subscribe({
+  async update(updateSupplierInput: SupplierInput) {
+    return new Observable<SupplierOutput>((observer) => {
+      const updateSupplier = this.supplierService.update(updateSupplierInput);
+      const subscription = updateSupplier.subscribe({
         next: (data) => {
           const { vatNumber, ...rest } = data;
           const supplier = { vatNumber: vatNumber.low, ...rest };
-          this.logger.log(supplier);
-          res(supplier);
+
+          observer.next(supplier);
+          observer.complete();
         },
         error: (error) => {
-          rej(error);
+          observer.error(error);
         },
       });
+
+      return () => {
+        subscription.unsubscribe();
+      };
     });
   }
-
-  async delete({ vatNumber }: DeleteSupplierInput): Promise<Response> {
-    return new Promise((res, rej) => {
-      const deleteSupplier = this.supplierService.delete({
-        vatNumber,
-      });
-      deleteSupplier.subscribe({
+  async delete({ vatNumber }: DeleteSupplierInput) {
+    return new Observable<Response>((observer) => {
+      const deleteSupplier = this.supplierService.delete({ vatNumber });
+      const subscription = deleteSupplier.subscribe({
         next: (data) => {
-          this.logger.log(data);
-          res(data);
+          observer.next(data);
+          observer.complete();
         },
         error: (error) => {
-          rej(error);
+          observer.error(error);
         },
       });
+
+      return () => {
+        subscription.unsubscribe();
+      };
     });
   }
 
-  async getAll(): Promise<any> {
-    return new Promise((res, rej) => {
+  getAll(): Observable<SupplierOutput[]> {
+    return new Observable<SupplierOutput[]>((observer) => {
       const allSuppliers = this.supplierService.findAll({});
-      allSuppliers.subscribe({
+      const subscription = allSuppliers.subscribe({
         next: (data) => {
           const suppliers = data.suppliers.map((obj) => {
             const vatNumber = obj.vatNumber.low;
@@ -91,30 +90,42 @@ export class SupplierService implements OnModuleInit {
               vatNumber,
             };
           });
-          this.logger.log(suppliers);
-          res(suppliers);
+
+          observer.next(suppliers);
         },
         error: (error) => {
-          rej(error);
+          observer.error(error);
+        },
+        complete: () => {
+          observer.complete();
         },
       });
+
+      return () => {
+        subscription.unsubscribe();
+      };
     });
   }
-  async getOne({ vatNumber }: DeleteSupplierInput): Promise<any> {
-    this.logger.log(vatNumber);
-    return new Promise((res, rej) => {
+
+  async getOne({ vatNumber }: DeleteSupplierInput) {
+    return new Observable<SupplierOutput>((observer) => {
       const oneSupplier = this.supplierService.findByVatNumber({ vatNumber });
-      oneSupplier.subscribe({
+      const subscription = oneSupplier.subscribe({
         next: (data) => {
           const { vatNumber, ...rest } = data;
           const supplier = { vatNumber: vatNumber.low, ...rest };
-          this.logger.log(supplier);
-          res(supplier);
+
+          observer.next(supplier);
+          observer.complete();
         },
         error: (error) => {
-          rej(error);
+          observer.error(error);
         },
       });
+
+      return () => {
+        subscription.unsubscribe();
+      };
     });
   }
 }

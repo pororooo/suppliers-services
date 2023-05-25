@@ -1,17 +1,17 @@
-syntax = "proto3";
+// syntax = "proto3";
 
-package file;
+// package file;
 
-service File {
-  rpc GetDataOne (GetDataOneRequest) returns (GetDataOneResponse) {}
-}
+// service File {
+//   rpc GetDataOne (GetDataOneRequest) returns (GetDataOneResponse) {}
+// }
 
-message GetDataOneRequest {
-  bytes content = 1;
-  string name = 2;
-  string type = 3;
-}
+// message GetDataOneRequest {
+//   bytes content = 1;
+//   string name = 2;
+//   string type = 3;
+// }
 
-message GetDataOneResponse {
-  string path = 1;
-}
+// message GetDataOneResponse {
+//   string path = 1;
+// }

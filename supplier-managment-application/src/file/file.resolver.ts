@@ -15,7 +15,7 @@ export class FileResolver {
     @Args('supplierName', { nullable: true }) supplierName: string,
     @Args('path', { nullable: true }) path: string,
   ): Promise<FileOutput> {
-    const data = await this.fileService.getAll({
+    const data = await this.fileService.getFileInfo({
       supplierName,
       path,
     });

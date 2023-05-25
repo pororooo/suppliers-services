@@ -15,9 +15,15 @@ type Response {
   status: Int!
 }
 
+type FileOutput {
+  supplierName: String
+  path: String
+}
+
 type Query {
   getAllSuppliers: [SupplierOutput!]
   getSupplier(getOneSupplierInput: DeleteSupplierInput!): SupplierOutput!
+  getFileInfo(supplierName: String, path: String): FileOutput!
 }
 
 input DeleteSupplierInput {
@@ -28,6 +34,7 @@ type Mutation {
   createSupplier(createSupplierInput: SupplierInput!): SupplierOutput!
   updateSupplier(updateSupplierInput: SupplierInput!): SupplierOutput!
   deleteSupplier(deleteSupplierInput: DeleteSupplierInput!): Response!
+  sendFileName(fileName: FileInput!): FileOutput!
 }
 
 input SupplierInput {
@@ -37,4 +44,8 @@ input SupplierInput {
   roles: String!
   sector: String!
   certificateLink: String!
+}
+
+input FileInput {
+  path: String!
 }

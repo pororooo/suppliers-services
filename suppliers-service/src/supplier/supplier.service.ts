@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from '@nestjs/common';
 import { GetSupplierDto } from './dto/getSupplier.dto';
 import { Status } from './dto/statusResponse.dto';
-import { DeleteSupplierDto } from './dto/deleteSupplier.dto';
+import { CreateSupplierDto } from './dto/createSupplier.dto';
+import { UpdateSupplierDto } from './dto/updateSupplier.dto';
 
 @Injectable()
 export class SupplierService {
   constructor(private readonly configService: ConfigService) {}
-  private readonly logger = new Logger(SupplierService.name);
 
   async findAll(): Promise<any> {
     const supplierResponce = await axios.get(
@@ -42,7 +41,7 @@ export class SupplierService {
     return { suppliers };
   }
 
-  async findByVatNumber(data: any): Promise<any> {
+  async findByVatNumber(data: any): Promise<GetSupplierDto> {
     const supplierResponce = await axios
       .get(
         `${this.configService.get<string>(
@@ -56,28 +55,24 @@ export class SupplierService {
         },
       )
       .then((res) => {
-        const transformedObj: any = {};
-
-        for (const key in res.data) {
-          if (res.data.hasOwnProperty(key)) {
-            const transformedKey = key.replace(/_(\w)/g, (_, char) =>
-              char.toUpperCase(),
-            );
-            transformedObj[transformedKey] = res.data[key];
-          }
-        }
-        this.logger.log({ ...transformedObj });
-        return { ...transformedObj };
+        const suppliers = {
+          vatNumber: res.data.vat_number,
+          name: res.data.name,
+          country: res.data.country,
+          roles: res.data.roles,
+          sector: res.data.sector,
+          certificateLink: res.data.certificate_link,
+        };
+        return suppliers;
       })
       .catch((error) => {
-        this.logger.log(error);
         return error;
       });
 
     return supplierResponce;
   }
 
-  async createSupplier(data: any): Promise<any> {
+  async createSupplier(data: any): Promise<CreateSupplierDto> {
     const supplierResponce = await axios
       .post(
         `${this.configService.get<string>(
@@ -110,14 +105,13 @@ export class SupplierService {
         return suppliers;
       })
       .catch((error) => {
-        this.logger.log(error);
         return error;
       });
 
     return supplierResponce;
   }
 
-  async updateSupplier(data: any): Promise<any> {
+  async updateSupplier(data: any): Promise<UpdateSupplierDto> {
     const supplierResponce = await axios
       .put(
         `${this.configService.get<string>(
@@ -157,7 +151,6 @@ export class SupplierService {
   }
 
   async deleteSupplier(data: any): Promise<Status> {
-
     const supplierResponce = await axios
       .delete(
         `${this.configService.get<string>(
