@@ -1,0 +1,21 @@
+.supplier-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.supplier-table th,
+.supplier-table td {
+  padding: 8px;
+}
+.supplier-table tr, .supplier-table th, .supplier-table td {
+  border: solid 2px black;
+}
+
+.name{
+  color: rgb(105, 105, 105)
+}
+
+.refreshButton{
+  border-radius: 10px;
+  margin: 10px
+}
