@@ -3,21 +3,25 @@ import { SupplierService } from './supplier.service';
 import { SupplierResolver } from './supplier.resolver';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { join } from 'path';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    ClientsModule.register([
+    ClientsModule.registerAsync([
       {
         name: 'SUPPLIER_PACKAGE',
-        transport: Transport.GRPC,
-        options: {
-          package: 'supplier',
-          protoPath: join(__dirname, '../grpc/proto/supplier.proto'),
-          url: 'localhost:50051'
-        },
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.GRPC,
+          options: {
+            package: 'supplier',
+            protoPath: join(__dirname, '../grpc/proto/supplier.proto'),
+            url: configService.get<string>('SUPPLIERS_SERVICE_URL'),
+          },
+        }),
+        inject: [ConfigService],
       },
     ]),
   ],
-  providers: [ SupplierResolver, SupplierService],
+  providers: [SupplierResolver, SupplierService],
 })
 export class SupplierModule {}

@@ -18,9 +18,6 @@ export const SupplierList = () => {
     return <p>Error: {error.message}</p>;
   }
 
-  if (data) {
-    console.log(data);
-  }
 
   return (
     <div>

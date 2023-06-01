@@ -4,9 +4,11 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SupplierModule } from './supplier/supplier.module';
 import { join } from 'path';
 import { FileModule } from './file/file.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       csrfPrevention: false,
       driver: ApolloDriver,

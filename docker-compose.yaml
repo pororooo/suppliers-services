@@ -1,0 +1,91 @@
+version: '3.8'
+services:
+  supplier-managment-application:
+    build:
+      dockerfile: Dockerfile
+      context: ./supplier-managment-application
+    environment:
+      SUPPLIER_SERVICE_URL: supplier-service:50051
+    # depends_on:
+    #   - events
+    #   - queries
+    # environment:
+    #   HTTP_BASIC_USERNAME: supplierservice
+    #   HTTP_BASIC_PASSWORD: 10d23ut10am05s
+    #   TYPEORM_PORT: 5432
+    #   TYPEORM_DATABASE: suppliers
+    #   TYPEORM_PASSWORD: root
+    #   TYPEORM_USERNAME: postgres
+    #   TYPEORM_TYPE: postgres
+    #   TYPEORM_HOST: localhost
+    ports:
+      - "3000:3000"
+    networks:
+      - default
+
+  suppliers-data-service:
+    build:
+      dockerfile: Dockerfile
+      context: ./suppliers-data-service
+    # depends_on:
+    #   - events
+    #   - queries
+    environment:
+      HTTP_BASIC_USERNAME: supplierservice
+      HTTP_BASIC_PASSWORD: 10d23ut10am05s
+      TYPEORM_PORT: 5432
+      TYPEORM_DATABASE: suppliers
+      TYPEORM_PASSWORD: root
+      TYPEORM_USERNAME: postgres
+      TYPEORM_TYPE: postgres
+      TYPEORM_HOST: suppliers
+    ports:
+      - "3002:3002"
+    networks:
+      - default
+
+  suppliers-service:
+    build:
+      dockerfile: Dockerfile
+      context: ./suppliers-service
+    # depends_on:
+    #   - suppliers-data-service
+    #   - certificate-data-service
+    environment:
+      HTTP_BASIC_USERNAME: supplierservice
+      HTTP_BASIC_PASSWORD: 10d23ut10am05s
+      SUPPLIERS_DATA_SERVICE_URL: http://localhost:3002
+    ports:
+      - "50051:50051"
+    networks:
+      - default
+
+  mongo:
+      image: mongo:latest
+      ports:
+        - "27017:27017"
+      networks:
+        - default
+
+  events:
+      image: postgres:latest
+      ports:
+        - "5433:5432"
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: root
+        POSTGRES_DB: events
+      networks:
+      - default
+
+      
+  suppliers:
+      image: postgres:latest
+      ports:
+        - "5434:5432"
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: root
+        POSTGRES_DB: suppliers
+      networks:
+        - default
