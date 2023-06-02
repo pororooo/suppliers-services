@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
       context: ./supplier-managment-application
     environment:
-      SUPPLIER_SERVICE_URL: supplier-service:50051
+      SUPPLIERS_SERVICE_URL: localhost:50051
     # depends_on:
     #   - events
     #   - queries
